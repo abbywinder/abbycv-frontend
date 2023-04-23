@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.Search-bar {
+    height: 20px;
+    width: 20px;
+}

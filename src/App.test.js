@@ -1,8 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('renders app', () => {
+    render(<App />);
+    const heading = screen.getByRole('application');
+    expect(heading).toBeInTheDocument();
 });
+
+test('error boundary should have action button', () => {
+    
+});
+
+test('error boundary needs to send logs to db', () => {
+    
+});
+
+
+
+
+
