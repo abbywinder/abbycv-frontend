@@ -10,6 +10,6 @@ export const useLifestages = () => useQuery(
     getLifestages,
     {
         staleTime: params.staleTime,
-        keepPreviousData: true
+        keepPreviousData: true,
     }
 );

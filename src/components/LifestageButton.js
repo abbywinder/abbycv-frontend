@@ -10,7 +10,8 @@ const LifestageButton = ({lifestage}) => {
         >
             <img 
                 src='https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg' 
-                className="button-img"   
+                className="button-img"
+                alt={`Image of Abby in ${lifestage.date_start.slice(0,4)}`}
             />
             <h3>
                 <span>
