@@ -1,9 +1,21 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import { useLifestages } from "../api/queries";
 import LandingScreen from "./LandingScreen";
+import PreviewSection from "./PreviewSection";
 
 jest.mock("../api/queries");
+
+const mockData = [{
+	achievements: [],
+	date_end: "2006-01-01T10:53:53.000Z",
+	date_start: "1999-01-01T10:53:53.000Z",
+	description: [],
+	hard_skills: [],
+	soft_skills: [],
+	title: "1999-2006 – Primary School",
+	_id: "6443fefed7e655211eddc799"
+}];
 
 describe("<LandingScreen />", () => {
 	beforeEach(() => {
@@ -18,14 +30,14 @@ describe("<LandingScreen />", () => {
 	});
 
 	it("Fetches all the lifestages", () => {
-		const { rerender } = render(<LandingScreen />);
+		render(<LandingScreen />);
 		expect(useLifestages).toHaveBeenCalled();		
-		expect(useLifestages).toHaveBeenCalledTimes(1);
+		expect(useLifestages).toHaveBeenCalledTimes(2);
 	});
 
 	it("Displays loading component", () => {
-		const { getByText } = render(<LandingScreen />);
-		expect(getByText(/loading/i)).toBeVisible();
+		const { getByTestId } = render(<LandingScreen />);
+		expect(getByTestId('loading-spinner')).toBeVisible();
 	});
 
 	it("Displays error message", () => {
@@ -34,29 +46,41 @@ describe("<LandingScreen />", () => {
 			isError: true,
 			error: { message: "Unable to fetch lifestage data" },
 		}));
-		const { getByText, queryByText } = render(<LandingScreen />);
+		const { getByText } = render(<LandingScreen />);
 
-		expect(queryByText(/loading/i)).toBeFalsy();
 		getByText(/something went wrong./i);
 	});
 
-	it("Displays data", () => {
-		const mockData = [{
-            achievements: [],
-            date_end: "2006-01-01T10:53:53.000Z",
-            date_start: "1999-01-01T10:53:53.000Z",
-            description: [],
-            hard_skills: [],
-            soft_skills: [],
-            title: "1999-2006 – Primary School",
-            _id: "6443fefed7e655211eddc799"
-        }]
-        
+	it("Renders the heading", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByText } = render(<LandingScreen />);
+
+		getByText(/abby winder/i);
+	});
+	
+	it("Renders the filter tags", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getAllByTestId } = render(<LandingScreen />);
+
+		// expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument(); //change to skeleton
+		getAllByTestId('header-filter-tags');
+	});
+
+	it("Renders the search component", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByTestId, getByRole } = render(<LandingScreen />);
+
+		expect(getByRole('search')).toBeInTheDocument();
+	});
+});
+
+describe("<PreviewSection />", () => {
+	it("Renders the lifestage cards", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
 
-		const { getByText, queryByText } = render(<LandingScreen />);
+		const { getByText } = render(<PreviewSection />);
 
-		expect(queryByText(/loading/i)).toBeFalsy();
-		getByText(mockData[0].title);
+		expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
+		expect(getByText(mockData[0].title.slice(12))).toBeInTheDocument();
 	});
 });

@@ -1,9 +1,21 @@
-import '../App.css';
+import './components.css';
+import { palette } from '../palette';
 
 const Loading = () => {
 
     return (
-        <p>Loading</p>
+        <div 
+            className="loading-container"
+            data-testid="loading-spinner"
+        >
+            <div 
+                className="loading-spinner"
+                style={{
+                    border: `5px solid ${palette.accent}`,
+                    borderTop: `5px solid ${palette.bg}`            
+                }}
+            />
+        </div>
     );
 };
 

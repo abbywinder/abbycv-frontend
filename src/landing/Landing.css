@@ -1,9 +1,89 @@
-.container {
+header {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 0;
 }
 
-.Search-bar {
-    height: 20px;
-    width: 20px;
+header h1 {
+    font-size: 6.25rem;
+    font-weight: 300;
+}
+
+.filter-tags-container {
+    display: flex;
+    flex-direction: row;
+    width: 40rem;
+    margin: 1rem;
+}
+
+.search-bar {
+    height: 3rem;
+    width: 40rem;
+    border: none;
+    border-radius: 3rem;
+    font-family: 'Ubuntu', sans-serif;
+    padding: 10px;
+}
+
+/* .video {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: -999;
+    width: 15vw;
+    height: 100vh;
+    background-color: black;
+} */
+
+.cards-section {
+    padding: 2rem;
+    text-align: center;
+}
+
+.cards-section h2 {
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+.cards-container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-items: center;
+    flex-wrap: wrap;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    margin: 1rem;
+    border-radius: 10px;
+    width: calc(33.333% - 6px - 6rem);
+}
+
+.card-container h3 {
+    font-weight: 300;
+}
+
+.card-container h4 {
+    font-weight: 500;
+}
+
+.card-img {
+    height: 4rem;
+    width: 4rem;
+    border-radius: 4rem;
+}
+
+.skill-tag-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
 }

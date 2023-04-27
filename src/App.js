@@ -1,16 +1,23 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
-import Loading from './components/Loading';
 import LandingScreen from './landing/LandingScreen';
+import { palette } from './palette';
 
 const App = () => {
 
   const queryClient = new QueryClient();
 
+
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="App" role={'application'}>
+      <div 
+        className="App" 
+        role={'application'}
+        style={{
+          backgroundColor: palette.bg
+        }}
+      >
         <LandingScreen />
       </div>
     </QueryClientProvider>

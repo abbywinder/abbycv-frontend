@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import ErrorBoundary from './components/ErrorBoundary';
 
 test('renders app', () => {
     render(<App />);
@@ -8,11 +9,13 @@ test('renders app', () => {
 });
 
 test('error boundary should have action button', () => {
-    
+    const { getByRole } = render(<ErrorBoundary />);
+    expect(getByRole('button')).toBeInTheDocument();
 });
 
 test('error boundary needs to send logs to db', () => {
-    
+    render(<ErrorBoundary />);
+    expect().toHaveBeenCalled();	
 });
 
 

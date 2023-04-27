@@ -8,11 +8,11 @@
     "@testing-library/user-event": "^13.5.0",
     "jest": "^27.5.1",
     "msw": "^1.2.1",
-    "nock": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "react-scripts": "5.0.1",
+    "sass": "^1.62.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
