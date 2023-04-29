@@ -5,8 +5,8 @@ const params = {
     staleTime: 1000 * 60 * 5 //5 mins
 };
 
-export const useLifestages = () => useQuery(
-    ['GET_LIFESTAGES'],
+export const useLifestages = query => useQuery(
+    ['GET_LIFESTAGES', query],
     getLifestages,
     {
         staleTime: params.staleTime,

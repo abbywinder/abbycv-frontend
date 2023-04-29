@@ -7,10 +7,10 @@ const Tag = ({children, i, testName}) => {
     return (
         <li 
             className="tag"
-            tabIndex={i} 
-            role="button" 
             data-testid={testName}
+            role="button" 
             aria-pressed="false"
+            tabIndex={i} 
             style={{
                 backgroundColor: palette.accent
             }}

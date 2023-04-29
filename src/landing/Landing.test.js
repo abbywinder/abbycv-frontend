@@ -32,12 +32,12 @@ describe("<LandingScreen />", () => {
 	it("Fetches all the lifestages", () => {
 		render(<LandingScreen />);
 		expect(useLifestages).toHaveBeenCalled();		
-		expect(useLifestages).toHaveBeenCalledTimes(2);
+		expect(useLifestages).toHaveBeenCalledTimes(3);
 	});
 
 	it("Displays loading component", () => {
-		const { getByTestId } = render(<LandingScreen />);
-		expect(getByTestId('loading-spinner')).toBeVisible();
+		const { getAllByTestId } = render(<LandingScreen />);
+		expect(getAllByTestId('loading-spinner')[0]).toBeVisible();
 	});
 
 	it("Displays error message", () => {
@@ -68,7 +68,7 @@ describe("<LandingScreen />", () => {
 
 	it("Renders the search component", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByTestId, getByRole } = render(<LandingScreen />);
+		const { getByRole } = render(<LandingScreen />);
 
 		expect(getByRole('search')).toBeInTheDocument();
 	});
@@ -78,7 +78,7 @@ describe("<PreviewSection />", () => {
 	it("Renders the lifestage cards", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
 
-		const { getByText } = render(<PreviewSection />);
+		const { getByText } = render(<PreviewSection section={'education'} />);
 
 		expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
 		expect(getByText(mockData[0].title.slice(12))).toBeInTheDocument();

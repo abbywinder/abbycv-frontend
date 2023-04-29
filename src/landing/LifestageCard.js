@@ -1,5 +1,5 @@
-import { palette } from '../palette';
 import Tag from '../components/Tag';
+import { palette } from '../palette';
 
 const LifestageCard = ({lifestage}) => {
 

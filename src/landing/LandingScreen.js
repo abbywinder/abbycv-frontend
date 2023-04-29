@@ -1,19 +1,16 @@
 import { useLifestages } from '../api/queries';
-import { capitalize } from '../api/utils/functions';
 import ErrorBoundary from '../components/ErrorBoundary';
-import LifestageCard from './LifestageCard';
-import Loading from '../components/Loading';
-import { palette } from '../palette';
-import DetailSection from './DetailSection';
-import './Landing.css';
 import PreviewSection from './PreviewSection';
 import Tag from '../components/Tag';
+import { palette } from '../palette';
+import './Landing.css';
 
 const LandingScreen = () => {
 
   const { isError } = useLifestages();
-
+  
   const placeholderSkills = ['skill 1', 'skill 2', 'skill 3'];
+  const sections = ['experience','education'];
 
   return (
     <ErrorBoundary hasError={isError}>
@@ -41,8 +38,15 @@ const LandingScreen = () => {
             placeholder='Search CV...'
           />
         </header>
-
-       <PreviewSection />
+        
+        <section id="preview">
+          {sections.map(section => (
+            <PreviewSection 
+              key={section} 
+              section={section} 
+            />
+          ))}
+        </section>
     </ErrorBoundary>
   );
 };

@@ -1,4 +1,3 @@
-import { Suspense, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
 import LandingScreen from './landing/LandingScreen';

@@ -18,6 +18,8 @@ test('error boundary needs to send logs to db', () => {
     expect().toHaveBeenCalled();	
 });
 
+// add tests for connecting to api - any api call need to check can reach server
+
 
 
 
