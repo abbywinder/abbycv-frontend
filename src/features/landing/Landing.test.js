@@ -1,6 +1,6 @@
 import React from "react";
 import { screen, render } from "@testing-library/react";
-import { useLifestages } from "../api/queries";
+import { useLifestages } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
 

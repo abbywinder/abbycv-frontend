@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useLifestages } from '../api/queries';
-import ErrorBoundary from '../components/ErrorBoundary';
+import { useLifestages } from '../../api/queries';
+import ErrorBoundary from '../../components/ErrorBoundary';
 import PreviewSection from './PreviewSection';
-import Tag from '../components/Tag';
-import { palette } from '../palette';
+import Tag from '../../components/Tag';
+import { palette } from '../../palette';
 import './Landing.css';
 
 const LandingScreen = () => {

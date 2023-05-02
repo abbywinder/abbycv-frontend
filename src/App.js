@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import './App.css';
-import LandingScreen from './landing/LandingScreen';
+import LandingScreen from './features/landing/LandingScreen';
 import { palette } from './palette';
 
 const App = () => {
