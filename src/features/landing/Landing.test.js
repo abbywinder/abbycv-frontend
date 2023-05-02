@@ -4,7 +4,7 @@ import { useLifestages } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
 
-jest.mock("../api/queries");
+jest.mock("../../api/queries");
 
 const mockData = [{
 	achievements: [],
