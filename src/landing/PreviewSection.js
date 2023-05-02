@@ -4,9 +4,9 @@ import LifestageCard from './LifestageCard';
 import Loading from '../components/Loading';
 import './Landing.css';
 
-const PreviewSection = ({section}) => {
+const PreviewSection = ({section, sort}) => {
 
-  const { data: lifestages, isLoading } = useLifestages({type: section});
+  const { data: lifestages, isLoading } = useLifestages({type: section, sort: sort});
 
   if (isLoading) return <Loading />
 

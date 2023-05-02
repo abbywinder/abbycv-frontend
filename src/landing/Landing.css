@@ -87,3 +87,11 @@ header h1 {
     width: 100%;
     justify-content: flex-start;
 }
+
+.sort-container {
+    padding: 20px;
+}
+
+.sort-container-text {
+    font-family: 'Ubuntu';
+}

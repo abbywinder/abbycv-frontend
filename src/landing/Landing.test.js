@@ -72,6 +72,14 @@ describe("<LandingScreen />", () => {
 
 		expect(getByRole('search')).toBeInTheDocument();
 	});
+
+	it("Renders the sort dropdown", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getAllByRole } = render(<LandingScreen />);
+
+		getAllByRole('option');
+	});
+
 });
 
 describe("<PreviewSection />", () => {
