@@ -1,5 +1,6 @@
 import React from "react";
 import { screen, render } from "@testing-library/react";
+import userEvent from '@testing-library/user-event';
 import { useLifestages } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
@@ -78,6 +79,25 @@ describe("<LandingScreen />", () => {
 		const { getAllByRole } = render(<LandingScreen />);
 
 		getAllByRole('option');
+	});
+
+	it("Sort dropdown value changes when new option selected", async () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByTestId } = render(<LandingScreen />);
+
+		const select = getByTestId('sort-dropdown');
+		expect(select).toHaveValue('yeardesc');
+		userEvent.selectOptions(select, 'durationdesc');
+		expect(select).toHaveValue('durationdesc');
+	});
+
+	it("Refetches lifestages when sort is changed", async () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByTestId } = render(<LandingScreen />);
+
+		const select = getByTestId('sort-dropdown');
+		userEvent.selectOptions(select, 'durationdesc');
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'education'});
 	});
 
 });

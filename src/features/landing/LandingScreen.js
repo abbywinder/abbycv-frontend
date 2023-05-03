@@ -61,6 +61,7 @@ const LandingScreen = () => {
             <select 
               name="sort" 
               id="sort"
+              data-testid="sort-dropdown"
               className='sort-container-text'
               value={selectedSort}
               onChange={e => setSelectedSort(e.target.value)}
