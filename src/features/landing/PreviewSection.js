@@ -4,23 +4,32 @@ import LifestageCard from './LifestageCard';
 import Loading from '../../components/Loading';
 import './Landing.css';
 
-const PreviewSection = ({section, sort}) => {
+const PreviewSection = ({section, sort, search}) => {
 
-  const { data: lifestages, isLoading } = useLifestages({type: section, sort: sort});
+  const params = {type: section, sort: sort};
+  if (search) params['search'] = search;
+
+  const { data: lifestages, isLoading } = useLifestages(params);
 
   if (isLoading) return <Loading />
 
   return (
     <section className="cards-section">
       <h2>{capitalize(section)}</h2>
-      <ul className="cards-container">
-        {lifestages && lifestages.map(lifestage => (
-          <LifestageCard 
-            key={lifestage._id}
-            lifestage={lifestage} 
-          />
-        ))}
-      </ul>
+      {lifestages && lifestages.length ? 
+        <ul className="cards-container">
+          {lifestages.map(lifestage => (
+            <LifestageCard 
+              key={lifestage._id}
+              lifestage={lifestage} 
+            />
+          ))}
+        </ul>
+      : 
+        <div className="empty-list">
+          <h3>No {section} results here!</h3>
+        </div>
+      }
     </section>  
   );
 };

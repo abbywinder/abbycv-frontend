@@ -27,7 +27,9 @@ const LifestageCard = ({lifestage}) => {
 
                 <aside className='skill-tag-container'>
                     {lifestage.hard_skills.slice(0,3).map(skill => (
-                        <Tag>{skill}</Tag>
+                        <Tag key={skill}>
+                            {skill}
+                        </Tag>
                     ))}
                 </aside>
             </a>

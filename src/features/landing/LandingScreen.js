@@ -4,6 +4,7 @@ import ErrorBoundary from '../../components/ErrorBoundary';
 import PreviewSection from './PreviewSection';
 import Tag from '../../components/Tag';
 import { palette } from '../../palette';
+import { validationErrors, sortOptions, sections } from './constants';
 import './Landing.css';
 
 const LandingScreen = () => {
@@ -11,22 +12,20 @@ const LandingScreen = () => {
   const { isError } = useLifestages();
   
   const placeholderSkills = ['skill 1', 'skill 2', 'skill 3'];
-  const sections = ['experience','education'];
-  const sortOptions = [{
-    name: 'yeardesc', 
-    label: 'Date descending'
-  }, {
-    name: 'yearasc', 
-    label: 'Date ascending'
-  }, {
-    name: 'durationdesc', 
-    label: 'Duration descending'
-  }, {
-    name: 'durationasc', 
-    label: 'Duration ascending'
-  }];
 
   const [selectedSort, setSelectedSort] = useState('yeardesc');
+  const [text, onChangeText] = useState('');
+  const [validationError, setValidationError] = useState(null);
+
+  const handleInput = input => {
+    const regex = /^[A-Za-z0-9 ._~()'!*:@,;+?-]*$/;
+    if (regex.test(input) && input.length <= 100) {
+      onChangeText(input)
+      setValidationError(null);
+    } else {
+      setValidationError(regex.test(input) ? validationErrors.tooLong : validationErrors.bad);
+    };
+  };
 
   return (
     <ErrorBoundary hasError={isError}>
@@ -47,12 +46,25 @@ const LandingScreen = () => {
             ))}
           </ul>
 
-          <input 
-            className="search-bar" 
-            type='search' 
-            role='search'
-            placeholder='Search CV...'
-          />
+          <div className='search-bar'>
+            <input
+              id='search-bar'
+              className='search-bar'
+              type='text' 
+              role='search'
+              placeholder='Search CV...'
+              value={text}
+              autoComplete='true'
+              onChange={e => handleInput(e.target.value)} //need to validate and produce error note if there are any validation issues
+            />
+            {validationError ?
+              <aside className='search-validation-text'>
+                <span>
+                  {validationError}
+                </span>
+              </aside>
+            : null}
+          </div>
         </header>
         
         <section id="preview">
@@ -83,6 +95,7 @@ const LandingScreen = () => {
               key={section} 
               section={section}
               sort={selectedSort}
+              search={text}
             />
           ))}
         </section>

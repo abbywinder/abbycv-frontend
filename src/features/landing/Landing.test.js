@@ -73,6 +73,53 @@ describe("<LandingScreen />", () => {
 
 		expect(getByRole('search')).toBeInTheDocument();
 	});
+	
+	it("Search bar value changes when text inputted", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByRole } = render(<LandingScreen />);
+
+		const searchBar = getByRole('search');
+		expect(searchBar).toHaveValue('');
+		userEvent.type(searchBar, 'react');
+		expect(searchBar).toHaveValue('react');
+	});
+
+	it("Refetches lifestages when text inputted to search bar", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByRole } = render(<LandingScreen />);
+
+		const searchBar = getByRole('search');
+		userEvent.type(searchBar, 'react');
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
+	});
+
+	it("Produces validation error when bad characters are inputted in search bar", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByRole, getByText } = render(<LandingScreen />);
+
+		const searchBar = getByRole('search');
+		userEvent.type(searchBar, 'react%');
+		expect(getByText("Only the following symbols allowed: ._~()'!*:@,;+?-")).toBeInTheDocument();
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
+	});
+
+	it("Produces validation error when search bar input length is over 100 characters", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		const { getByRole, getByText } = render(<LandingScreen />);
+
+		const searchBar = getByRole('search');
+		userEvent.type(searchBar, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+		expect(getByText("Max 100 characters allowed")).toBeInTheDocument();
+		expect(searchBar).toHaveValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ');
+	});
+
+	it("Shows empty list message when no results are found", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: [] }));
+		const { getByText } = render(<LandingScreen />);
+
+		expect(getByText('No experience results here!')).toBeInTheDocument();
+		expect(getByText('No education results here!')).toBeInTheDocument();
+	});
 
 	it("Renders the sort dropdown", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
