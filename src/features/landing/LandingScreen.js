@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLifestages } from '../../api/queries';
+import { useLifestages, useSkills } from '../../api/queries';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import PreviewSection from './PreviewSection';
 import Tag from '../../components/Tag';
@@ -11,11 +11,12 @@ const LandingScreen = () => {
 
   const { isError } = useLifestages();
   
-  const placeholderSkills = ['skill 1', 'skill 2', 'skill 3'];
+  const { data: skills, isLoading: skillsLoading, isError: skillsError } = useSkills();
 
   const [selectedSort, setSelectedSort] = useState('yeardesc');
   const [text, onChangeText] = useState('');
   const [validationError, setValidationError] = useState(null);
+  const [selectedFilterTags, setSelectedFilterTags] = useState([]);
 
   const handleInput = input => {
     const regex = /^[A-Za-z0-9 ._~()'!*:@,;+?-]*$/;
@@ -34,18 +35,23 @@ const LandingScreen = () => {
         }}>
           <h1>Abby Winder</h1>
 
-          <ul className='filter-tags-container'>
-            {placeholderSkills.map((each, i) => (
-              <Tag 
-                key={each}
-                i={i}
-                testName="header-filter-tags"
-              >
-                {each}
-              </Tag>
-            ))}
-          </ul>
-
+          {skillsLoading || skillsError ? 
+            null
+            : <ul className='filter-tags-container'>
+              {skills.map((each, i) => (
+                <Tag 
+                  key={each._id}
+                  i={i}
+                  testName="header-filter-tags"
+                  handleClick={() => setSelectedFilterTags(prev => prev.includes(each._id) ? prev.filter(e => e !== each._id) : [...prev, each._id])}
+                  selected={selectedFilterTags.includes(each._id)}
+                >
+                  {each._id}
+                </Tag>
+              ))}
+            </ul>
+          }
+          
           <div className='search-bar'>
             <input
               id='search-bar'
@@ -55,7 +61,7 @@ const LandingScreen = () => {
               placeholder='Search CV...'
               value={text}
               autoComplete='true'
-              onChange={e => handleInput(e.target.value)} //need to validate and produce error note if there are any validation issues
+              onChange={e => handleInput(e.target.value)}
             />
             {validationError ?
               <aside className='search-validation-text'>
@@ -96,6 +102,7 @@ const LandingScreen = () => {
               section={section}
               sort={selectedSort}
               search={text}
+              filters={selectedFilterTags}
             />
           ))}
         </section>

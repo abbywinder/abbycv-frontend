@@ -2,17 +2,18 @@ import './components.css';
 import { palette } from '../palette';
 
 
-const Tag = ({children, i, testName}) => {
+const Tag = ({children, i, testName, selected, handleClick}) => {
 
     return (
         <li 
+            onClick={handleClick}
             className="tag"
             data-testid={testName}
             role="button" 
             aria-pressed="false"
             tabIndex={i} 
             style={{
-                backgroundColor: palette.accent
+                backgroundColor: selected ? palette.selected : palette.deselected
             }}
         >
             <span>

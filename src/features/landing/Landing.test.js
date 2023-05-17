@@ -1,9 +1,10 @@
 import React from "react";
 import { screen, render } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
-import { useLifestages } from "../../api/queries";
+import { useLifestages, useSkills } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
+import { palette } from '../../palette';
 
 jest.mock("../../api/queries");
 
@@ -18,9 +19,14 @@ const mockData = [{
 	_id: "6443fefed7e655211eddc799"
 }];
 
+const mockSkillTags = [{
+	_id: 'Organisation'
+}];
+
 describe("<LandingScreen />", () => {
 	beforeEach(() => {
 		useLifestages.mockImplementation(() => ({ isLoading: true }));
+		useSkills.mockImplementation(() => ({ isLoading: true }));
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -34,6 +40,12 @@ describe("<LandingScreen />", () => {
 		render(<LandingScreen />);
 		expect(useLifestages).toHaveBeenCalled();		
 		expect(useLifestages).toHaveBeenCalledTimes(3);
+	});
+
+	it("Fetches the skill filter data", () => {
+		render(<LandingScreen />);
+		expect(useSkills).toHaveBeenCalled();		
+		expect(useSkills).toHaveBeenCalledTimes(1);
 	});
 
 	it("Displays loading component", () => {
@@ -61,10 +73,32 @@ describe("<LandingScreen />", () => {
 	
 	it("Renders the filter tags", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
 		const { getAllByTestId } = render(<LandingScreen />);
 
-		// expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument(); //change to skeleton
 		getAllByTestId('header-filter-tags');
+	});
+
+	it("Refetches lifestages when filter tag is clicked", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
+		const { getAllByTestId } = render(<LandingScreen />);
+
+		const tag = getAllByTestId('header-filter-tags')[0];
+		userEvent.click(tag);
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', soft_skills: 'organisation'});
+	});
+
+	it("Filter tag changes colour when clicked once, and changes back when clicked again", () => {
+		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
+		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
+		const { getAllByTestId } = render(<LandingScreen />);
+
+		const tag = getAllByTestId('header-filter-tags')[0];
+		userEvent.click(tag);
+		expect(tag).toHaveStyle({backgroundColor: palette.selected});
+		userEvent.click(tag);
+		expect(tag).toHaveStyle({backgroundColor: palette.deselected});
 	});
 
 	it("Renders the search component", () => {
