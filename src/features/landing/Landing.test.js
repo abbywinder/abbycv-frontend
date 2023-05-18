@@ -1,5 +1,5 @@
 import React from "react";
-import { screen, render } from "@testing-library/react";
+import { screen, render, act } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 import { useLifestages, useSkills } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
@@ -20,7 +20,7 @@ const mockData = [{
 }];
 
 const mockSkillTags = [{
-	_id: 'Organisation'
+	_id: 'organisation'
 }];
 
 describe("<LandingScreen />", () => {
@@ -85,8 +85,10 @@ describe("<LandingScreen />", () => {
 		const { getAllByTestId } = render(<LandingScreen />);
 
 		const tag = getAllByTestId('header-filter-tags')[0];
-		userEvent.click(tag);
-		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', soft_skills: 'organisation'});
+		act(() => {
+			userEvent.click(tag);
+		});
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', soft_skills: ['organisation']});
 	});
 
 	it("Filter tag changes colour when clicked once, and changes back when clicked again", () => {
@@ -95,9 +97,14 @@ describe("<LandingScreen />", () => {
 		const { getAllByTestId } = render(<LandingScreen />);
 
 		const tag = getAllByTestId('header-filter-tags')[0];
-		userEvent.click(tag);
+		act(() => {
+			userEvent.click(tag);
+		});
 		expect(tag).toHaveStyle({backgroundColor: palette.selected});
-		userEvent.click(tag);
+
+		act(() => {
+			userEvent.click(tag);
+		});
 		expect(tag).toHaveStyle({backgroundColor: palette.deselected});
 	});
 
@@ -114,7 +121,9 @@ describe("<LandingScreen />", () => {
 
 		const searchBar = getByRole('search');
 		expect(searchBar).toHaveValue('');
-		userEvent.type(searchBar, 'react');
+		act(() => {
+			userEvent.type(searchBar, 'react');
+		});
 		expect(searchBar).toHaveValue('react');
 	});
 
@@ -123,7 +132,9 @@ describe("<LandingScreen />", () => {
 		const { getByRole } = render(<LandingScreen />);
 
 		const searchBar = getByRole('search');
-		userEvent.type(searchBar, 'react');
+		act(() => {
+			userEvent.type(searchBar, 'react');
+		});
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
 	});
 
@@ -132,7 +143,9 @@ describe("<LandingScreen />", () => {
 		const { getByRole, getByText } = render(<LandingScreen />);
 
 		const searchBar = getByRole('search');
-		userEvent.type(searchBar, 'react%');
+		act(() => {
+			userEvent.type(searchBar, 'react%');
+		});
 		expect(getByText("Only the following symbols allowed: ._~()'!*:@,;+?-")).toBeInTheDocument();
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
 	});
@@ -142,7 +155,9 @@ describe("<LandingScreen />", () => {
 		const { getByRole, getByText } = render(<LandingScreen />);
 
 		const searchBar = getByRole('search');
-		userEvent.type(searchBar, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+		act(() => {
+			userEvent.type(searchBar, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+		});
 		expect(getByText("Max 100 characters allowed")).toBeInTheDocument();
 		expect(searchBar).toHaveValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ');
 	});
@@ -168,7 +183,9 @@ describe("<LandingScreen />", () => {
 
 		const select = getByTestId('sort-dropdown');
 		expect(select).toHaveValue('yeardesc');
-		userEvent.selectOptions(select, 'durationdesc');
+		act(() => {
+			userEvent.selectOptions(select, 'durationdesc');
+		});
 		expect(select).toHaveValue('durationdesc');
 	});
 
@@ -177,7 +194,9 @@ describe("<LandingScreen />", () => {
 		const { getByTestId } = render(<LandingScreen />);
 
 		const select = getByTestId('sort-dropdown');
-		userEvent.selectOptions(select, 'durationdesc');
+		act(() => {
+			userEvent.selectOptions(select, 'durationdesc');
+		});
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'education'});
 	});
 

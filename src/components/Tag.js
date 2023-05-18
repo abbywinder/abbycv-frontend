@@ -10,7 +10,7 @@ const Tag = ({children, i, testName, selected, handleClick}) => {
             className="tag"
             data-testid={testName}
             role="button" 
-            aria-pressed="false"
+            aria-pressed={selected}
             tabIndex={i} 
             style={{
                 backgroundColor: selected ? palette.selected : palette.deselected

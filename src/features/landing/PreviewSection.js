@@ -8,7 +8,7 @@ const PreviewSection = ({ section, sort, search, filters }) => {
 
   const params = {type: section, sort: sort};
   if (search) params['search'] = search;
-  if (filters.length) params['soft_skills'] = filters;
+  if (filters && filters.length) params['soft_skills'] = filters;
 
   const { data: lifestages, isLoading } = useLifestages(params);
 
