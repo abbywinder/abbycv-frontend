@@ -1,16 +1,15 @@
 import Tag from '../../components/Tag';
+import { Link } from 'react-router-dom';
 import { palette } from '../../palette';
 
 const LifestageCard = ({lifestage}) => {
 
     return (
-        <li
-            className="card-container"
-            style={{
-                border: `solid 3px ${palette.accent}`
-            }}
-        >
-            <a>
+        <li className="card-container">
+            <Link 
+                to={`/stage/${encodeURIComponent(lifestage._id)}`}
+                data-testid='lifestage-card-link'
+            >
                 <img 
                     src='https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg' 
                     className="card-img"
@@ -32,7 +31,7 @@ const LifestageCard = ({lifestage}) => {
                         </Tag>
                     ))}
                 </aside>
-            </a>
+            </Link>
         </li>
     );
 };

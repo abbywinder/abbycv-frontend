@@ -1,10 +1,12 @@
 import React from "react";
 import { screen, render, act } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom'
 import { useLifestages, useSkills } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
 import { palette } from '../../palette';
+import App from "../../App";
 
 jest.mock("../../api/queries");
 
@@ -33,23 +35,23 @@ describe("<LandingScreen />", () => {
 	});
 
 	it("Renders without crashing", () => {
-		render(<LandingScreen />);
+		render(<LandingScreen />, {wrapper: BrowserRouter});
 	});
 
 	it("Fetches all the lifestages", () => {
-		render(<LandingScreen />);
+		render(<LandingScreen />, {wrapper: BrowserRouter});
 		expect(useLifestages).toHaveBeenCalled();		
 		expect(useLifestages).toHaveBeenCalledTimes(3);
 	});
 
 	it("Fetches the skill filter data", () => {
-		render(<LandingScreen />);
+		render(<LandingScreen />, {wrapper: BrowserRouter});
 		expect(useSkills).toHaveBeenCalled();		
 		expect(useSkills).toHaveBeenCalledTimes(1);
 	});
 
 	it("Displays loading component", () => {
-		const { getAllByTestId } = render(<LandingScreen />);
+		const { getAllByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 		expect(getAllByTestId('loading-spinner')[0]).toBeVisible();
 	});
 
@@ -59,22 +61,15 @@ describe("<LandingScreen />", () => {
 			isError: true,
 			error: { message: "Unable to fetch lifestage data" },
 		}));
-		const { getByText } = render(<LandingScreen />);
+		const { getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		getByText(/something went wrong./i);
-	});
-
-	it("Renders the heading", () => {
-		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByText } = render(<LandingScreen />);
-
-		getByText(/abby winder/i);
 	});
 	
 	it("Renders the filter tags", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
-		const { getAllByTestId } = render(<LandingScreen />);
+		const { getAllByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		getAllByTestId('header-filter-tags');
 	});
@@ -82,7 +77,7 @@ describe("<LandingScreen />", () => {
 	it("Refetches lifestages when filter tag is clicked", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
-		const { getAllByTestId } = render(<LandingScreen />);
+		const { getAllByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const tag = getAllByTestId('header-filter-tags')[0];
 		act(() => {
@@ -94,7 +89,7 @@ describe("<LandingScreen />", () => {
 	it("Filter tag changes colour when clicked once, and changes back when clicked again", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
-		const { getAllByTestId } = render(<LandingScreen />);
+		const { getAllByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const tag = getAllByTestId('header-filter-tags')[0];
 		act(() => {
@@ -110,14 +105,14 @@ describe("<LandingScreen />", () => {
 
 	it("Renders the search component", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByRole } = render(<LandingScreen />);
+		const { getByRole } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		expect(getByRole('search')).toBeInTheDocument();
 	});
 	
 	it("Search bar value changes when text inputted", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByRole } = render(<LandingScreen />);
+		const { getByRole } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
 		expect(searchBar).toHaveValue('');
@@ -129,7 +124,7 @@ describe("<LandingScreen />", () => {
 
 	it("Refetches lifestages when text inputted to search bar", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByRole } = render(<LandingScreen />);
+		const { getByRole } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
 		act(() => {
@@ -140,7 +135,7 @@ describe("<LandingScreen />", () => {
 
 	it("Produces validation error when bad characters are inputted in search bar", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByRole, getByText } = render(<LandingScreen />);
+		const { getByRole, getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
 		act(() => {
@@ -152,7 +147,7 @@ describe("<LandingScreen />", () => {
 
 	it("Produces validation error when search bar input length is over 100 characters", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByRole, getByText } = render(<LandingScreen />);
+		const { getByRole, getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
 		act(() => {
@@ -164,7 +159,7 @@ describe("<LandingScreen />", () => {
 
 	it("Shows empty list message when no results are found", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: [] }));
-		const { getByText } = render(<LandingScreen />);
+		const { getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		expect(getByText('No experience results here!')).toBeInTheDocument();
 		expect(getByText('No education results here!')).toBeInTheDocument();
@@ -172,14 +167,14 @@ describe("<LandingScreen />", () => {
 
 	it("Renders the sort dropdown", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getAllByRole } = render(<LandingScreen />);
+		const { getAllByRole } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		getAllByRole('option');
 	});
 
 	it("Sort dropdown value changes when new option selected", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByTestId } = render(<LandingScreen />);
+		const { getByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const select = getByTestId('sort-dropdown');
 		expect(select).toHaveValue('yeardesc');
@@ -191,7 +186,7 @@ describe("<LandingScreen />", () => {
 
 	it("Refetches lifestages when sort is changed", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
-		const { getByTestId } = render(<LandingScreen />);
+		const { getByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const select = getByTestId('sort-dropdown');
 		act(() => {
@@ -206,7 +201,7 @@ describe("<PreviewSection />", () => {
 	it("Renders the lifestage cards", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockData }));
 
-		const { getByText } = render(<PreviewSection section={'education'} />);
+		const { getByText } = render(<PreviewSection section={'education'} />, {wrapper: BrowserRouter});
 
 		expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();
 		expect(getByText(mockData[0].title.slice(12))).toBeInTheDocument();

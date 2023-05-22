@@ -1,0 +1,48 @@
+li {
+    display: list-item;
+    list-style: circle;
+}
+
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+#title {
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    margin: 0 3rem;
+}
+
+#title h1 {
+    margin-right: 10px;
+}
+
+.desc-img-container {
+    display: flex;
+    flex: 1;
+}
+
+.desc-img-container div:first-child {
+    flex: 1;
+    margin: 0 3rem;
+}
+
+.desc-img-container div:nth-child(2) {
+    flex: 2;
+}
+
+.images {
+    flex: 1;
+}
+
+.skills-container {
+    margin: 0 3rem;
+    padding: 2rem 0;
+}
+
+.skills-container div div {
+    display: flex;
+    flex-wrap: wrap;
+}

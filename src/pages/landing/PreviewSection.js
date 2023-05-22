@@ -2,7 +2,7 @@ import { useLifestages } from '../../api/queries';
 import { capitalize } from '../../utils/functions';
 import LifestageCard from './LifestageCard';
 import Loading from '../../components/Loading';
-import './Landing.css';
+import './landing.css';
 
 const PreviewSection = ({ section, sort, search, filters }) => {
 

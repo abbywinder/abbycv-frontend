@@ -6,6 +6,10 @@ export const getLifestages = ({ queryKey: [key, query] }) => {
     return getData(baseURL + endpoint + `/?${encodedQuery}`);
 };
 
+export const getOneLifestage = ({ queryKey: [key, id] }) => {
+    return getData(baseURL + endpoint + `/${id}`);
+};
+
 export const getSkills = ({ queryKey: [key] }) => {
     return getData(baseURL + endpoint + '/skills');
 };

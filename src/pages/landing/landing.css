@@ -1,14 +1,9 @@
-header {
+.search-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 3rem 0;
-}
-
-header h1 {
-    font-size: 6.25rem;
-    font-weight: 300;
 }
 
 .filter-tags-container {
@@ -77,12 +72,12 @@ header h1 {
 .card-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     padding: 2rem;
     margin: 1rem;
     border-radius: 10px;
-    width: calc(33.333% - 6px - 6rem);
+    width: calc(33.333% - 6rem);
 }
 
 .card-container h3 {
@@ -94,9 +89,7 @@ header h1 {
 }
 
 .card-img {
-    height: 4rem;
-    width: 4rem;
-    border-radius: 4rem;
+    width: 100%;
 }
 
 .skill-tag-container {
