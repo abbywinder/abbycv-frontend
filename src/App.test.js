@@ -30,7 +30,7 @@ describe("<App />", () => {
 		getByText(/abby winder/i);
 	});
 
-    it("The heading links to the landing page", () => {
+    it("The heading links to the landing page", async () => {
 
         useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages, isError: false }));
         useOneLifestage.mockImplementation(() => ({ isLoading: false, isError: false, data: mockLifestageOne }));
@@ -38,15 +38,16 @@ describe("<App />", () => {
 
         const { getByText, getAllByTestId } = render(<App />);
 
-        act(() => {
-            userEvent.click(getAllByTestId('lifestage-card-link')[0]);
+        const user = userEvent.setup()
+        await act(async () => {
+            await user.click(getAllByTestId('lifestage-card-link')[0]);
         });
         expect(useOneLifestage).toHaveBeenCalled();
 
 
 		const heading = getByText(/abby winder/i);
-        act(() => {
-            userEvent.click(heading);
+        await act(async () => {
+            await userEvent.click(heading);
         });
 
         expect(useLifestages).toHaveBeenCalledTimes(6);
@@ -77,7 +78,7 @@ describe("<Page404 />", () => {
         expect(queryByText(/abby winder/i)).not.toBeInTheDocument();
     });
 
-    it('404 page links back to landing page', () => {
+    it('404 page links back to landing page', async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
         useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages, isError: false }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags, isError: false }));
@@ -98,9 +99,10 @@ describe("<Page404 />", () => {
         const { getByTestId, getByText, queryByText } = render(<RouterProvider router={router} />);
         
         expect(queryByText(/abby winder/i)).not.toBeInTheDocument;
-
-        act(() => {
-            userEvent.click(getByTestId('back-link'));
+        
+        const user = userEvent.setup()
+        await act(async () => {
+            await user.click(getByTestId('back-link'));
         });
         expect(getByText(/abby winder/i)).toBeInTheDocument();
     });

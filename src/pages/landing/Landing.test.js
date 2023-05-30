@@ -60,31 +60,35 @@ describe("<LandingScreen />", () => {
 		getAllByTestId('header-filter-tags');
 	});
 
-	it("Refetches lifestages when filter tag is clicked", () => {
+	it("Refetches lifestages when filter tag is clicked", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
 		const { getAllByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const tag = getAllByTestId('header-filter-tags')[0];
-		act(() => {
-			userEvent.click(tag);
+		
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.click(tag);
 		});
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', soft_skills: ['organisation']});
 	});
 
-	it("Filter tag changes colour when clicked once, and changes back when clicked again", () => {
+	it("Filter tag changes colour when clicked once, and changes back when clicked again", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
 		const { getAllByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const tag = getAllByTestId('header-filter-tags')[0];
-		act(() => {
-			userEvent.click(tag);
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await userEvent.click(tag);
 		});
 		expect(tag).toHaveStyle({backgroundColor: palette.selected});
 
-		act(() => {
-			userEvent.click(tag);
+		await act(async () => {
+			await user.click(tag);
 		});
 		expect(tag).toHaveStyle({backgroundColor: palette.deselected});
 	});
@@ -96,48 +100,56 @@ describe("<LandingScreen />", () => {
 		expect(getByRole('search')).toBeInTheDocument();
 	});
 	
-	it("Search bar value changes when text inputted", () => {
+	it("Search bar value changes when text inputted", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		const { getByRole } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
 		expect(searchBar).toHaveValue('');
-		act(() => {
-			userEvent.type(searchBar, 'react');
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.type(searchBar, 'react');
 		});
 		expect(searchBar).toHaveValue('react');
 	});
 
-	it("Refetches lifestages when text inputted to search bar", () => {
+	it("Refetches lifestages when text inputted to search bar", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		const { getByRole } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
-		act(() => {
-			userEvent.type(searchBar, 'react');
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.type(searchBar, 'react');
 		});
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
 	});
 
-	it("Produces validation error when bad characters are inputted in search bar", () => {
+	it("Produces validation error when bad characters are inputted in search bar", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		const { getByRole, getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
-		act(() => {
-			userEvent.type(searchBar, 'react%');
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.type(searchBar, 'react%');
 		});
 		expect(getByText("Only the following symbols allowed: ._~()'!*:@,;+?-")).toBeInTheDocument();
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
 	});
 
-	it("Produces validation error when search bar input length is over 100 characters", () => {
+	it("Produces validation error when search bar input length is over 100 characters", async () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		const { getByRole, getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const searchBar = getByRole('search');
-		act(() => {
-			userEvent.type(searchBar, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.type(searchBar, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
 		});
 		expect(getByText("Max 100 characters allowed")).toBeInTheDocument();
 		expect(searchBar).toHaveValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ');
@@ -164,8 +176,10 @@ describe("<LandingScreen />", () => {
 
 		const select = getByTestId('sort-dropdown');
 		expect(select).toHaveValue('yeardesc');
-		act(() => {
-			userEvent.selectOptions(select, 'durationdesc');
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.selectOptions(select, 'durationdesc');
 		});
 		expect(select).toHaveValue('durationdesc');
 	});
@@ -175,8 +189,10 @@ describe("<LandingScreen />", () => {
 		const { getByTestId } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
 		const select = getByTestId('sort-dropdown');
-		act(() => {
-			userEvent.selectOptions(select, 'durationdesc');
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.selectOptions(select, 'durationdesc');
 		});
 		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'education'});
 	});
@@ -193,14 +209,16 @@ describe("<PreviewSection />", () => {
 		expect(getByText(mockLifestages[0].title.slice(12))).toBeInTheDocument();
 	});
 
-	it('navigates when lifestage card clicked', () => {
+	it('navigates when lifestage card clicked', async () => {
         useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
         useOneLifestage.mockImplementation(() => ({ isLoading: true }));
 
         const { getAllByTestId } = render(<App />);
-        act(() => {
-            userEvent.click(getAllByTestId('lifestage-card-link')[0]);
+
+		const user = userEvent.setup()
+        await act(async () => {
+            await user.click(getAllByTestId('lifestage-card-link')[0]);
         });
         expect(useOneLifestage).toHaveBeenCalled();
     });

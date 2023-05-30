@@ -2,7 +2,7 @@ export const baseURL = 'http://localhost:3003/api/'
 
 // ----------------- API METHODS -----------------
 
-export const getData = urlToFetch => {
+export const getData = (urlToFetch, options = {}) => {
     const getDataFromUrl = async () => {
         try {
             const response =  await fetch(urlToFetch);
@@ -10,7 +10,8 @@ export const getData = urlToFetch => {
                 const data = await response.json();
                 return data;
             } else {
-                return null;
+                const responseText = await response.text()
+                return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
@@ -20,14 +21,14 @@ export const getData = urlToFetch => {
     return getDataFromUrl();
 };
 
-export const postData = (urlToPost, dataToPost, customHeaders) => {
+export const postData = (urlToPost, dataToPost, options = {}) => {
     const data = JSON.stringify(dataToPost);
     const postDataToEndpoint = async () => {
         try {
             const response =  await fetch(urlToPost, {
                 method: 'POST',
                 body: data,
-                headers: customHeaders ? customHeaders : {
+                headers: options.customHeaders ? options.customHeaders : {
                     'Content-type': 'application/json'
                 }
             });
@@ -36,7 +37,8 @@ export const postData = (urlToPost, dataToPost, customHeaders) => {
                 const dataReturned = await response.json();
                 return dataReturned;
             } else {
-                return null;
+                const responseText = await response.text()
+                return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
@@ -46,14 +48,14 @@ export const postData = (urlToPost, dataToPost, customHeaders) => {
     return postDataToEndpoint();
 };
 
-export const putData = (urlToPut, dataToPut, customHeaders) => {
+export const putData = (urlToPut, dataToPut, options = {}) => {
     const data = JSON.stringify(dataToPut);
     const putDataToEndpoint = async () => {
         try {
             const response =  await fetch(urlToPut, {
                 method: 'PUT',
                 body: data,
-                headers: customHeaders ? customHeaders : {
+                headers: options.customHeaders ? options.customHeaders : {
                     'Content-type': 'application/json'
                 }
             });
@@ -61,7 +63,8 @@ export const putData = (urlToPut, dataToPut, customHeaders) => {
                 const dataReturned = await response.json();
                 return dataReturned;
             } else {
-                return null;
+                const responseText = await response.text()
+                return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
@@ -71,7 +74,7 @@ export const putData = (urlToPut, dataToPut, customHeaders) => {
     return putDataToEndpoint();
 };
 
-export const patchData = (urlToPatch, op, path, value) => {
+export const patchData = (urlToPatch, op, path, value, options = {}) => {
     const patchDataToEndpoint = async () => {
         const data = JSON.stringify({
             op: op,
@@ -91,7 +94,8 @@ export const patchData = (urlToPatch, op, path, value) => {
                 const dataReturned = await response.json();
                 return dataReturned;
             } else {
-                return null;
+                const responseText = await response.text()
+                return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
@@ -101,7 +105,7 @@ export const patchData = (urlToPatch, op, path, value) => {
     return patchDataToEndpoint();
 };
 
-export const deleteData = (urlToDelete) => {
+export const deleteData = (urlToDelete, options = {}) => {
     const deleteDataFromEndpoint = async () => {
         try {
             const response =  await fetch(urlToDelete, {

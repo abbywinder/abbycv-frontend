@@ -1,7 +1,7 @@
 import { baseURL, getData } from "./api-methods";
 const endpoint = 'lifestages'
 
-export const getLifestages = ({ queryKey: [key, query] }) => {
+export const getLifestages = ({ queryKey: [key, query = ''] }) => {
     const encodedQuery = new URLSearchParams(query).toString();
     return getData(baseURL + endpoint + `/?${encodedQuery}`);
 };

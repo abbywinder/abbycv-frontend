@@ -6,6 +6,7 @@ export const mockLifestages = [{
 	hard_skills: [],
 	soft_skills: [],
 	title: "1999-2006 – Primary School",
+	type: 'education',
 	_id: "6443fefed7e655211eddc799"
 }];
 
@@ -22,5 +23,6 @@ export const mockLifestageOne = {
 	soft_skills: [],
 	title: "1999-2006 – Primary School",
 	_id: "6443fefed7e655211eddc799",
-    background_col: 'lightsalmon'
+    background_col: 'lightsalmon',
+	type: 'education'
 };

@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import Loading from '../../components/Loading';
 import Tag from '../../components/Tag';
 import { capitalize } from '../../utils/functions';
+import ChatGPTDialog from './chatGPTDialog/ChatGPTDialog';
 import './lifestage.css';
 
 const LifestageScreen = () => {
@@ -41,8 +42,8 @@ const LifestageScreen = () => {
                 
                 <section className='desc-img-container'>
                     <div data-testid='description'>
-                        {lifestage.description && lifestage.description.map(paragraph => (
-                            <p>{paragraph}</p>
+                        {lifestage.description && lifestage.description.map((paragraph,i) => (
+                            <p key={i}>{paragraph}</p>
                         ))}
 
                         {lifestage.achievements && lifestage.achievements.length ?
@@ -50,7 +51,9 @@ const LifestageScreen = () => {
                                 <h3>Achievements</h3>
                                 <ul>
                                     {lifestage.achievements.map(achievement => (
-                                        <li>{achievement}</li>
+                                        <li key={achievement}>
+                                            {achievement}
+                                        </li>
                                     ))}
                                 </ul>
                             </Fragment>
@@ -83,6 +86,9 @@ const LifestageScreen = () => {
                         : null
                     ))}
                 </section>
+                <ChatGPTDialog 
+                    lifestage={lifestage}
+                />
             </div>
         </ErrorBoundary>
     );
