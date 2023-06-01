@@ -46,3 +46,23 @@ h4 {
 textarea:focus, input:focus{
   outline: none;
 }
+
+body[data-theme='light'] {
+  --colors-bg: #fff;
+  --colors-font: #000000;
+  --colors-accent: #99beff;
+  --colors-accent2: #c9f2f2;
+  --colors-selected: #fff;
+  --colors-deselected: #d1d2d3;
+  --colors-lowcontrast: #ededed;
+}
+
+body[data-theme='dark'] {
+  --colors-bg: #fff;
+  --colors-font: #000000;
+  --colors-accent: #99beff;
+  --colors-accent2: #c9f2f2;
+  --colors-selected: #fff;
+  --colors-deselected: #d1d2d3;
+  --colors-lowcontrast: #ededed;
+}

@@ -7,7 +7,6 @@ import { useOneLifestage } from "../../api/queries";
 import { mockLifestageOne } from "../../utils/testConstants";
 import ChatGPTDialog from "./chatGPTDialog/ChatGPTDialog";
 import { getChatGPTResponse } from "../../api/chat-api";
-import Message from "./chatGPTDialog/Message";
 
 jest.mock("../../api/queries");
 jest.mock("../../api/chat-api");
@@ -38,7 +37,7 @@ describe("<LifestageScreen />", () => {
 describe("<ChatGPTDialog />", () => {
     beforeEach(() => {
         useOneLifestage.mockImplementation(() => ({ isLoading: false, isError: false, data: mockLifestageOne }));
-        getChatGPTResponse.mockImplementation(() => ({ response: 'This is the response' }));
+        getChatGPTResponse.mockImplementation(() => new Promise(resolve => setTimeout(() => resolve({ response: 'This is the response' }), 2000)));
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -159,7 +158,7 @@ describe("<ChatGPTDialog />", () => {
 
     it("handleUserChat => when user submits a reply or a prompt, it updates the chat with new sender (client) and message", async () => {
         jest.useFakeTimers();
-        const { getAllByTestId, queryAllByTestId, getByTestId } = render(<ChatGPTDialog lifestage={mockLifestageOne} />, {wrapper: BrowserRouter});
+        const { getAllByTestId, queryAllByTestId, getByTestId, getByText } = render(<ChatGPTDialog lifestage={mockLifestageOne} />, {wrapper: BrowserRouter});
        
         const user = userEvent.setup({ delay: null });
         await act(async () => {
@@ -170,7 +169,6 @@ describe("<ChatGPTDialog />", () => {
             jest.runAllTimers();
         });
 
-        const { getByText } = render(<Message />, {wrapper: BrowserRouter});
         expect(queryAllByTestId('message-client')).toHaveLength(0);
 
         await act(async () => {
@@ -183,7 +181,7 @@ describe("<ChatGPTDialog />", () => {
 
     it("handleUserChat => as soon as a user submits a reply or a prompt, prompts should disappear", async () => {
         jest.useFakeTimers();
-        const { getAllByTestId, queryAllByTestId, getByTestId, queryByTestId } = render(<ChatGPTDialog lifestage={mockLifestageOne} />, {wrapper: BrowserRouter});
+        const { getAllByTestId, queryAllByTestId, getByTestId } = render(<ChatGPTDialog lifestage={mockLifestageOne} />, {wrapper: BrowserRouter});
 
         const user = userEvent.setup({ delay: null });
         await act(async () => {
@@ -199,7 +197,7 @@ describe("<ChatGPTDialog />", () => {
         await act(async () => {
             await user.click(getAllByTestId('prompt')[0])
         });
-        await waitFor(() => expect(queryAllByTestId('prompt')).toHaveLength(0));
+        expect(queryAllByTestId('prompt')).toHaveLength(0);
         
         jest.useRealTimers();
 	});
@@ -226,7 +224,7 @@ describe("<ChatGPTDialog />", () => {
 
     it("getChatResponse => when a successful response is received from the api, any chat value with {status: loading, sender: chatbot} should be replaced with correct response message and status (success)", async () => {
         jest.useFakeTimers();
-        const { getAllByTestId, queryByTestId, getByText, getByTestId } = render(<ChatGPTDialog lifestage={mockLifestageOne} />, {wrapper: BrowserRouter});
+        const { getAllByTestId, queryByTestId, getByText, queryAllByTestId, getByTestId } = render(<ChatGPTDialog lifestage={mockLifestageOne} />, {wrapper: BrowserRouter});
         
         const user = userEvent.setup({ delay: null });
         await act(async () => {
@@ -237,14 +235,23 @@ describe("<ChatGPTDialog />", () => {
             jest.runAllTimers();
         });
 
+
         await act(async () => {
             await user.click(getAllByTestId('prompt')[0])
         });
 
-        expect(queryByTestId('typing')).not.toBeInTheDocument();
-        expect(getByText('This is the response')).toBeInTheDocument();
-        expect(getAllByTestId('message-client')).toHaveLength(1);
-        expect(getAllByTestId('message-chatbot')).toHaveLength(2);
+        act(() => {
+            jest.runAllTimers();
+        });
+
+
+        await waitFor(() => {
+            expect(queryByTestId('typing')).not.toBeInTheDocument();
+            expect(getByText('This is the response')).toBeInTheDocument();
+            expect(queryAllByTestId('message-client')).toHaveLength(1);
+            expect(queryAllByTestId('message-chatbot')).toHaveLength(2);
+        });
+
         jest.useRealTimers();
     });
 
@@ -283,14 +290,18 @@ describe("<ChatGPTDialog />", () => {
         });
 
         act(() => {
-            jest.runAllTimers();
+            jest.advanceTimersByTime(1500);
         });
 
         await act(async () => {
             await user.click(getAllByTestId('prompt')[0])
         });
 
-        expect(getAllByTestId('prompt')).toHaveLength(2);
+        act(() => {
+            jest.runAllTimers();
+        });
+
+        await waitFor(() => expect(getAllByTestId('prompt')).toHaveLength(2));
         jest.useRealTimers();
 	});
 

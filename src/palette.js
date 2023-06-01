@@ -9,3 +9,4 @@ export const palette = {
     deselected: colorTheme === 'light' ? '#d1d2d3' : '#d1d2d3',
     lowContrast: colorTheme === 'light' ? '#ededed' : '#ededed'
 };
+
