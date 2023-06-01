@@ -4,9 +4,7 @@ const Message = ({ children, sender }) => {
             className={`message-container ${sender}`}
             data-testid={`message-${sender}`}
         >
-            <span>
-                {children}
-            </span>
+            {children}
         </div>
     )
 };

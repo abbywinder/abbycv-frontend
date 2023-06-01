@@ -24,7 +24,7 @@ const LifestageScreen = () => {
             <div 
                 className='container'
                 style={{    
-                    backgroundColor: lifestage.background_col,
+                    backgroundColor: document.body.dataset.theme === 'light' ? lifestage.background_col : 'inherit',
                     color: 'white'
                 }}
             >

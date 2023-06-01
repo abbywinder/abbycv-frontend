@@ -11,9 +11,7 @@ const Tag = ({children, i, testName, selected, handleClick}) => {
             aria-pressed={selected}
             tabIndex={i} 
         >
-            <span>
-                {children}
-            </span>
+            {children}
         </li>
     );
 };

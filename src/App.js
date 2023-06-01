@@ -28,10 +28,7 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div 
-        className="app" 
-        role={'application'}
-      >
+      <div role={'application'}>
         <RouterProvider router={router} />
       </div>
     </QueryClientProvider>

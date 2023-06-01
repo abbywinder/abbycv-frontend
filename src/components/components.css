@@ -6,14 +6,21 @@
   margin: 0.2rem;
   white-space: nowrap;
   background-color: var(--colors-deselected);
+  color: var(--colors-font);
 }
 
 .selected {
   background-color: var(--colors-selected);
+  color: var(--colors-font-contrast);
 }
 
 .tag:hover {
   cursor: pointer;
+}
+
+.tag:hover:not(.selected) {
+  background-color: var(--colors-accent);
+  color: var(--colors-font);
 }
 
 @keyframes spinner {
@@ -54,32 +61,32 @@
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #9880ff;
-  color: #9880ff;
-  box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+  background-color: var(--colors-accent);
+  color: var(--colors-accent);
+  box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   animation: dot-typing 1.5s infinite linear;
 }
 
 @keyframes dot-typing {
   0% {
-      box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
   16.667% {
-      box-shadow: 9984px -10px 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      box-shadow: 9984px -10px 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
   33.333% {
-      box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
   50% {
-      box-shadow: 9984px 0 0 0 #9880ff, 9999px -10px 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px -10px 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
   66.667% {
-      box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
   83.333% {
-      box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px -10px 0 0 #9880ff;
+      box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px -10px 0 0 var(--colors-accent);
   }
   100% {
-      box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
 }
