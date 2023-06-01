@@ -1,5 +1,4 @@
 import './components.css';
-import { palette } from '../palette';
 
 const Loading = () => {
 
@@ -8,13 +7,7 @@ const Loading = () => {
             className="loading-container"
             data-testid="loading-spinner"
         >
-            <div 
-                className="loading-spinner"
-                style={{
-                    border: `5px solid ${palette.accent}`,
-                    borderTop: `5px solid ${palette.bg}`            
-                }}
-            />
+            <div className="loading-spinner" />
         </div>
     );
 };

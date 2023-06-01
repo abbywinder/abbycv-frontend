@@ -17,3 +17,7 @@ header h1 {
     align-items: center;
     flex-direction: column;
 }
+
+.app {
+    background-color: var(--colors-bg);
+}

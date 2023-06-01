@@ -5,7 +5,6 @@ import Page404 from './404';
 import './App.css';
 import LandingScreen from './pages/landing/LandingScreen';
 import LifestageScreen from './pages/lifestages/LifestageScreen';
-import { palette } from './palette';
 
 const App = () => {
 
@@ -30,11 +29,8 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <div 
-        className="App" 
+        className="app" 
         role={'application'}
-        style={{
-          backgroundColor: palette.bg
-        }}
       >
         <RouterProvider router={router} />
       </div>

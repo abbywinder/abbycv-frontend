@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getChatGPTResponse } from '../../../api/chat-api';
 import Typing from '../../../components/Typing';
-import { palette } from '../../../palette';
 import ChatGPTDialogHead from './ChatGPTDialogHead';
 import ChatInput from './ChatInput';
 import Message from './Message';
@@ -76,10 +75,6 @@ const ChatGPTDialog = ({ lifestage }) => {
             <section 
                 className='chat-dialog open'
                 data-testid='chat-dialog-open'
-                style={{
-                    backgroundColor: palette.lowContrast, 
-                    color: palette.font
-                }}
             >
                 <ChatGPTDialogHead setDialogOpen={setDialogOpen} />
 
@@ -112,13 +107,7 @@ const ChatGPTDialog = ({ lifestage }) => {
                 onClick={() => setDialogOpen(true)}
                 data-testid='chat-dialog-closed'
             >
-                <p 
-                    style={{
-                        backgroundColor: palette.bg, 
-                        color: palette.font
-                    }}
-                    className='closed-caption'
-                >
+                <p className='closed-caption'>
                     Get ChatGPT's "opinion"
                 </p>
                 <img 

@@ -1,6 +1,5 @@
 import Tag from '../../components/Tag';
 import { Link } from 'react-router-dom';
-import { palette } from '../../palette';
 
 const LifestageCard = ({lifestage}) => {
 

@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { useLifestages, useOneLifestage, useSkills } from "../../api/queries";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
-import { palette } from '../../palette';
 import App from "../../App";
 import { mockLifestages, mockSkillTags } from "../../utils/testConstants";
 
@@ -85,12 +84,12 @@ describe("<LandingScreen />", () => {
 		await act(async () => {
 			await userEvent.click(tag);
 		});
-		expect(tag).toHaveStyle({backgroundColor: palette.selected});
+		expect(tag).toHaveClass('selected');
 
 		await act(async () => {
 			await user.click(tag);
 		});
-		expect(tag).toHaveStyle({backgroundColor: palette.deselected});
+		expect(tag).not.toHaveClass('selected');
 	});
 
 	it("Renders the search component", () => {

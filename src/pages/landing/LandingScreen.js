@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useLifestages, useSkills } from '../../api/queries';
 import ErrorBoundary from '../../components/ErrorBoundary';
 import PreviewSection from './PreviewSection';
-import { palette } from '../../palette';
 import { validationErrors, sortOptions, sections } from './constants';
 import './landing.css';
 import FilterSection from './FilterSection';
@@ -34,12 +33,7 @@ const LandingScreen = () => {
   return (
     <ErrorBoundary hasError={isError}>
         <Header />
-        <section 
-          className='search-container' 
-          style={{
-            backgroundColor: palette.accent2
-          }}
-        >
+        <section className='search-container'>
           {skillsLoading || skillsError ? 
             null
             : <FilterSection 

@@ -5,6 +5,11 @@
   border-radius: 20rem;
   margin: 0.2rem;
   white-space: nowrap;
+  background-color: var(--colors-deselected);
+}
+
+.selected {
+  background-color: var(--colors-selected);
 }
 
 .tag:hover {
@@ -34,6 +39,8 @@
   height: 30px;
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
+  border: 5px solid var(--colors-accent);
+  border-top: 5px solid var(--colors-bg);
 }
 
 .dot-container {
