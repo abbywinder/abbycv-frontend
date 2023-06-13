@@ -17,3 +17,14 @@ header h1 {
     align-items: center;
     flex-direction: column;
 }
+
+.app {
+    overflow: hidden;
+}
+
+@media only screen and (min-width:0px) and (max-width:479px)  { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ }
+@media only screen and (min-width:480px) and (max-width:599px)  { /* smartphones, Android phones, landscape iPhone */ }
+@media only screen and (min-width:600px) and (max-width:800px)  { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */ }
+@media only screen and (min-width:801px) and (max-width:1024px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media only screen and (min-width:1025px) and (max-width:1280px) { /* big landscape tablets, laptops, and desktops */ }
+@media only screen and (min-width:1281px) { /* hi-res laptops and desktops */ }

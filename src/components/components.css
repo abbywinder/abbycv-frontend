@@ -11,14 +11,14 @@
 
 .selected {
   background-color: var(--colors-selected);
-  color: var(--colors-font-contrast);
+  color: #000;
 }
 
-.tag:hover {
+.tag:hover:not(.hover-disable) {
   cursor: pointer;
 }
 
-.tag:hover:not(.selected) {
+.tag:hover:not(.selected,.hover-disable) {
   background-color: var(--colors-accent);
   color: var(--colors-font);
 }
@@ -90,3 +90,10 @@
       box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);
   }
 }
+
+@media only screen and (min-width:0px) and (max-width:479px)  { /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */ }
+@media only screen and (min-width:480px) and (max-width:599px)  { /* smartphones, Android phones, landscape iPhone */ }
+@media only screen and (min-width:600px) and (max-width:800px)  { /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */ }
+@media only screen and (min-width:801px) and (max-width:1024px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ }
+@media only screen and (min-width:1025px) and (max-width:1280px) { /* big landscape tablets, laptops, and desktops */ }
+@media only screen and (min-width:1281px) { /* hi-res laptops and desktops */ }

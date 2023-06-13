@@ -3,11 +3,6 @@ li {
     list-style: circle;
 }
 
-.container {
-    min-height: 100vh;
-    min-width: 100vw;
-}
-
 #title {
     padding-top: 100px;
     display: flex;
@@ -24,6 +19,11 @@ h1 {
     flex: 1;
 }
 
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
 .desc-img-container div:first-child {
     flex: 1;
     margin: 0 3rem;
@@ -31,6 +31,13 @@ h1 {
 
 .desc-img-container div:nth-child(2) {
     flex: 2;
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.desc-img-container div:nth-child(2)::-webkit-scrollbar {
+    display: none;
 }
 
 .images {
@@ -58,7 +65,8 @@ h1 {
 .open {
     height: 80%;
     flex-direction: column;
-    width: 400px;
+    max-width: 400px;
+    min-width: 400px;
     border-radius: 25px;
     box-shadow: 0 4px 16px rgba(0,0,0,.25);
     -webkit-box-shadow: 0 4px 16px rgba(0,0,0,.25);
@@ -78,6 +86,8 @@ h1 {
 
 .closed-caption {
     padding: 5px; 
+    height: fit-content;
+    text-align: center;
     border-radius: 5px;
     background-color: var(--colors-bg);
     color: var(--colors-font);
@@ -168,12 +178,13 @@ h1 {
     bottom: 0;
     min-height: 77px;
     max-height: 77px;
+    width: 100%;
 }
 
 .chat-input {
     display: flex;
-    min-width: 400px;
-    max-width: 400px;
+    max-width: 100%;
+    min-width: 100%;
     border: none;
     padding: 0.75rem;
     box-sizing: border-box;
@@ -193,11 +204,65 @@ h1 {
 }
 
 button {
-	background: none;
-	color: inherit;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+
+
+
+@media only screen and (min-width:0px) and (max-width:1024px)  { 
+    /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+
+    #title {
+        padding: 100px 2rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1, h2 {
+        text-align: center;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-right: 10px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .desc-img-container {
+        flex-direction: column;        
+    }
+
+    img {
+        padding: 1rem 0;
+    }
+
+    .chat-dialog {
+        bottom: 0;
+        right: 0;
+    }
+    
+    .open {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        max-width: 100vw;
+        min-width: 100vw;    
+    }
+
+    .chat-input {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 }

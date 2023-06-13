@@ -23,12 +23,12 @@ const App = () => {
   ]);
 
   useEffect(() => {
-    document.body.dataset.theme = 'light'
+    document.body.dataset.theme = 'light' //get from cookies
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div role={'application'}>
+      <div role={'application'} className='app'>
         <RouterProvider router={router} />
       </div>
     </QueryClientProvider>

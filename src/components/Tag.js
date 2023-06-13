@@ -1,11 +1,11 @@
 import './components.css';
 
-const Tag = ({children, i, testName, selected, handleClick}) => {
+const Tag = ({children, i, testName, selected, handleClick, disableHover}) => {
 
     return (
         <li 
             onClick={handleClick}
-            className={`tag${selected ? ' selected' : ''}`}
+            className={`tag${selected ? ' selected' : ''}${disableHover ? ' hover-disable' : ''}`}
             data-testid={testName}
             role="button" 
             aria-pressed={selected}
