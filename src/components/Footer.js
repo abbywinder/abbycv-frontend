@@ -20,17 +20,17 @@ const Footer = () => {
     };
     
     return (
-        <section class='footer'>
+        <section className='footer'>
             {
                 links.length ? links.map(link => (
-                    <a href={link.link}>
+                    <a key={link.link} href={link.link}>
                         {link.icon}
                     </a>
                 ))
             : null}
-            <aside onClick={toggleTheme}>
+            <button onClick={toggleTheme}>
                 {activeTheme && activeTheme === 'light' ? icons.moon : icons.sun}
-            </aside>
+            </button>
         </section>
     );
 };

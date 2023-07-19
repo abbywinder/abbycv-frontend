@@ -74,6 +74,13 @@
   justify-content: space-between;
 }
 
+.error {
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  height: 100vh;
+}
+
 @keyframes dot-typing {
   0% {
       box-shadow: 9984px 0 0 0 var(--colors-accent), 9999px 0 0 0 var(--colors-accent), 10014px 0 0 0 var(--colors-accent);

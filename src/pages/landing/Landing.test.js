@@ -7,6 +7,7 @@ import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
 import App from "../../App";
 import { mockLifestages, mockSkillTags } from "../../utils/testConstants";
+import Footer from "../../components/Footer";
 
 jest.mock("../../api/queries");
 
@@ -208,7 +209,7 @@ describe("<PreviewSection />", () => {
 		expect(getByText(mockLifestages[0].title.slice(12))).toBeInTheDocument();
 	});
 
-	it('navigates when lifestage card clicked', async () => {
+	it('Navigates when lifestage card clicked', async () => {
         useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 		useSkills.mockImplementation(() => ({ isLoading: false, data: mockSkillTags }));
         useOneLifestage.mockImplementation(() => ({ isLoading: true }));
@@ -221,4 +222,22 @@ describe("<PreviewSection />", () => {
         });
         expect(useOneLifestage).toHaveBeenCalled();
     });
+});
+
+describe("<Footer />", () => {
+	it("Color theme changes when toggled", async () => {
+		const { getByRole } = render(<Footer />, {wrapper: BrowserRouter});
+		expect(getByRole('button')).toBeInTheDocument();
+
+		const button = getByRole('button');
+
+		expect(document.body.dataset.theme).toBe('light')
+
+		const user = userEvent.setup()
+		await act(async () => {
+			await user.click(button)
+		});
+
+		expect(document.body.dataset.theme).toBe('dark')
+	});
 });

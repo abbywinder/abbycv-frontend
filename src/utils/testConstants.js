@@ -1,6 +1,6 @@
 export const mockLifestages = [{
 	achievements: [],
-	date_end: "2006-01-01T10:53:53.000Z",
+	date_end: "2012-01-01T10:53:53.000Z",
 	date_start: "1999-01-01T10:53:53.000Z",
 	description: [],
 	hard_skills: [],
@@ -16,7 +16,7 @@ export const mockSkillTags = [{
 
 export const mockLifestageOne = {
 	achievements: [],
-	date_end: "2006-01-01T10:53:53.000Z",
+	date_end: "2012-01-01T10:53:53.000Z",
 	date_start: "1999-01-01T10:53:53.000Z",
 	description: [],
 	hard_skills: [],
