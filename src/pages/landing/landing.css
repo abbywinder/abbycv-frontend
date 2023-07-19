@@ -110,6 +110,7 @@
     font-weight: 300;
 }
 
+
 @media only screen and (min-width:0px) and (max-width:599px)  { 
     .card-container {
         width: calc(100% - 2rem);

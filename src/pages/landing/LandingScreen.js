@@ -8,6 +8,7 @@ import FilterSection from './FilterSection';
 import SearchBar from './SearchBar';
 import Sort from './Sort';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const LandingScreen = () => {
 
@@ -67,6 +68,7 @@ const LandingScreen = () => {
             />
           ))}
         </section>
+        <Footer />
     </ErrorBoundary>
   );
 };

@@ -1,5 +1,4 @@
 import { useQuery } from 'react-query';
-import { getChatGPTResponse } from './chat-api';
 import { getLifestages, getOneLifestage, getSkills } from './lifestages-api';
 
 const params = {

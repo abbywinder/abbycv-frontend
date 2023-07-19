@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Page404 from './404';
@@ -21,10 +21,6 @@ const App = () => {
       errorElement: <Page404 />
     }
   ]);
-
-  useEffect(() => {
-    document.body.dataset.theme = 'light' //get from cookies
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
