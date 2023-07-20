@@ -74,6 +74,12 @@
   justify-content: space-between;
 }
 
+.links {
+  display: flex;
+  justify-content: space-between;
+  width: 4rem;
+}
+
 .error {
   display: flex; 
   align-items: center; 
