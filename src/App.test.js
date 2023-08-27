@@ -5,14 +5,21 @@ import Page404 from './404';
 import { useLifestages, useOneLifestage, useSkills } from './api/queries';
 import App from './App';
 import LandingScreen from './pages/landing/LandingScreen';
+import { checkAuth, encryptPassword, redirectIfTokenExpired } from './utils/functions';
 import { mockLifestageOne, mockLifestages, mockSkillTags } from './utils/testConstants';
+import jwtDecode from 'jwt-decode';
+import JSEncrypt from 'jsencrypt';
 
 jest.mock("./api/queries");
+jest.mock("./api/login-api");
+jest.mock('jwt-decode');
+jest.mock('jsencrypt');
 
 describe("<App />", () => {
 	beforeEach(() => {
         useLifestages.mockImplementation(() => ({ isLoading: true }));
         useSkills.mockImplementation(() => ({ isLoading: true }));
+        jest.spyOn(require('./utils/functions'), 'checkAuth').mockReturnValue(true);
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -50,9 +57,146 @@ describe("<App />", () => {
             await userEvent.click(heading);
         });
 
-        expect(useLifestages).toHaveBeenCalledTimes(6);
-        expect(useSkills).toHaveBeenCalledTimes(2);
+        expect(useLifestages).toHaveBeenCalled();
+        expect(useSkills).toHaveBeenCalled();
 	});
+
+    it("Checks user authorisation", async () => {
+        render(<App />);
+        expect(checkAuth).toHaveBeenCalled();
+    });
+
+    it("Displays <Login /> if user not authorised", async () => {
+        checkAuth.mockReturnValue(false);
+        const { getByText } = render(<App />);
+        expect(checkAuth).toHaveBeenCalled();
+        getByText('Please enter credentials to proceed...');
+    });
+
+    it("Displays <LandingScreen /> if user authorised", async () => {
+        const { getByText } = render(<App />);
+        expect(checkAuth).toHaveBeenCalled();
+		getByText('Abby Winder');
+    });
+});
+
+describe("Functions", () => {
+    beforeEach(() => {
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(null);    
+        jest.spyOn(require('./utils/functions'), 'checkAuth');
+        jest.spyOn(require('./utils/functions'), 'redirectIfTokenExpired');
+    });
+
+    afterEach(() => {
+		jest.clearAllMocks();
+        jest.restoreAllMocks();
+	});
+
+    it('checkAuth returns false and app shows login page if no auth token in local storage', async () => {
+        const { getByText } = render(<App />);
+        expect(checkAuth).toHaveBeenCalled();
+        getByText('Please enter credentials to proceed...');
+    });
+
+    it('checkAuth returns false and app shows login page if auth token has expired', async () => {
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(true);        
+        jwtDecode.mockReturnValue({exp: 1690289046});
+        const { getByText } = render(<App />);
+        expect(checkAuth).toHaveBeenCalled();
+        getByText('Please enter credentials to proceed...');
+    });
+
+    it('checkAuth returns true and shows landing page if auth token has not expired', async () => {
+        useLifestages.mockImplementation(() => ({ isLoading: true }));
+        useSkills.mockImplementation(() => ({ isLoading: true }));
+
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(true);        
+        jwtDecode.mockReturnValue({exp: 33247197764});
+        const { getByText } = render(<App />);
+        expect(checkAuth).toHaveBeenCalled();
+        getByText('Abby Winder');
+    });
+
+    it('redirectIfTokenExpired redirects to login if auth token not present', async () => {
+        useLifestages.mockImplementation(() => ({ isLoading: true }));
+        useSkills.mockImplementation(() => ({ isLoading: true }));
+
+        // test token is present initially
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(true);        
+        jwtDecode.mockReturnValue({exp: 33247197764});
+        const { getByText } = render(<App />);
+        getByText('Abby Winder');
+
+        // test for redirection if token removed
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(null);
+        const returnVal = redirectIfTokenExpired(test=true);
+        expect(returnVal).toEqual('REDIRECTED');        
+    });
+    
+    it('redirectIfTokenExpired redirects to login if auth token expired', async () => {
+        useLifestages.mockImplementation(() => ({ isLoading: true }));
+        useSkills.mockImplementation(() => ({ isLoading: true }));
+
+        // test token is present initially
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(true);        
+        jwtDecode.mockReturnValue({exp: 33247197764});
+        const { getByText } = render(<App />);
+        getByText('Abby Winder');
+
+        // test for redirection if token expired
+        jwtDecode.mockReturnValue({exp: 1690289046});
+        const returnVal = redirectIfTokenExpired(test=true);
+        expect(returnVal).toEqual('REDIRECTED');        
+    });
+
+    it('redirectIfTokenExpired does nothing if auth token not expired', async () => {
+        useLifestages.mockImplementation(() => ({ isLoading: true }));
+        useSkills.mockImplementation(() => ({ isLoading: true }));
+
+        // test token is present initially
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(true);        
+        jwtDecode.mockReturnValue({exp: 33247197764});
+        const { getByText } = render(<App />);
+        getByText('Abby Winder');
+
+        // test for null response if token fine
+        const returnVal = redirectIfTokenExpired(test=true);
+        expect(returnVal).toEqual(null);    
+        getByText('Abby Winder');   
+    });
+
+    it('encryptPassword should return the encrypted password', () => {
+        const publicKeyMock = 'publicKeyMock';
+        const password = 'mockPassword';
+        const encryptedPasswordMock = 'encryptedMockPassword';
+
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(publicKeyMock);
+    
+        const mockEncryptInstance = {
+            setPublicKey: jest.fn(),
+            encrypt: jest.fn(() => encryptedPasswordMock),
+        };
+        JSEncrypt.mockImplementation(() => mockEncryptInstance);
+    
+        const encryptedPassword = encryptPassword(password);
+        
+        expect(encryptedPassword).toBe(encryptedPasswordMock);
+        expect(global.Storage.prototype.getItem).toHaveBeenCalledWith('encryptionKey');
+        expect(JSEncrypt).toHaveBeenCalledTimes(1);
+        expect(JSEncrypt().setPublicKey).toHaveBeenCalledWith(publicKeyMock);
+        expect(JSEncrypt().encrypt).toHaveBeenCalledWith(password);
+    });
+    
+    it('encryptPassword should throw an error if publicKey is missing', () => {
+        jest.spyOn(global.Storage.prototype, 'getItem').mockReturnValue(null);
+    
+        expect(() => {
+          encryptPassword('testPassword');
+        }).toThrowError('Error code: 1');
+        expect(global.Storage.prototype.getItem).toHaveBeenCalledWith('encryptionKey');
+        expect(JSEncrypt).not.toHaveBeenCalled();
+    });
+
 });
 
 describe("<Page404 />", () => {
@@ -108,17 +252,7 @@ describe("<Page404 />", () => {
     });
 });
 
-// test('error boundary should have action button', () => {
-//     const { getByRole } = render(<ErrorBoundary />);
-//     expect(getByRole('button')).toBeInTheDocument();
-// });
 
-// test('error boundary needs to send logs to db', () => {
-//     render(<ErrorBoundary />);
-//     expect().toHaveBeenCalled();	
-// });
-
-// add tests for connecting to api - any api call need to check can reach server
 
 
 

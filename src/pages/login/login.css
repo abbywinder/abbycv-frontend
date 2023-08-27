@@ -1,0 +1,54 @@
+.login-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 75px;
+}
+
+.credential-input {
+    font-family: 'Ubuntu', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 5px;
+    border: 2px solid var(--colors-accent);
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    width: 300px;
+}
+
+.heading-text {
+    font-size: 2rem;
+    margin-bottom: 50px;
+}
+
+.submit {
+    margin: 40px;
+    padding: 10px;
+    background-color: var(--colors-accent);
+    color: #fff;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.submit.disabled {
+    background-color: var(--colors-deselected);
+    cursor: not-allowed;
+}
+
+.cred-error {
+    padding: 10px;
+    margin: 10px;
+    background-color: var(--colors-lowcontrast);
+    border-radius: 5px;
+}

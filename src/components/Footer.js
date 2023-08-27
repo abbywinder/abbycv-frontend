@@ -8,7 +8,7 @@ const Footer = () => {
     },[]);
 
     const links = [{
-        link: 'www.google.com',
+        link: 'www.google.co',
         icon: icons.linkedin
     }, {
         link: 'www.google.com',

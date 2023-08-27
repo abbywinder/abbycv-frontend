@@ -1,19 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLifestages, useSkills } from '../../api/queries';
-import ErrorBoundary from '../../components/ErrorBoundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import PreviewSection from './PreviewSection';
-import { validationErrors, sortOptions, sections } from './constants';
+import { validationErrors, sortOptions, sections } from '../constants';
 import './landing.css';
 import FilterSection from './FilterSection';
 import SearchBar from './SearchBar';
 import Sort from './Sort';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import ErrorPage from '../../components/ErrorPage';
+import { redirect } from 'react-router-dom';
+import { checkAuth } from '../../utils/functions';
 
 const LandingScreen = () => {
-
-  const { isError } = useLifestages();
   
+  const authorized = checkAuth();
+
   const { data: skills, isLoading: skillsLoading, isError: skillsError } = useSkills();
 
   const [selectedSort, setSelectedSort] = useState('yeardesc');
@@ -31,8 +34,12 @@ const LandingScreen = () => {
     };
   };
 
+  if (!authorized) redirect('/login'); 
+
+  if (skillsError) return <ErrorPage />;
+
   return (
-    <ErrorBoundary hasError={isError}>
+    <ErrorBoundary FallbackComponent={ErrorPage}>
         <Header />
         <section className='search-container'>
           {skillsLoading || skillsError ? 

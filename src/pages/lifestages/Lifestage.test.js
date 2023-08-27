@@ -7,9 +7,20 @@ import { useOneLifestage } from "../../api/queries";
 import { mockLifestageOne } from "../../utils/testConstants";
 import ChatGPTDialog from "./chatGPTDialog/ChatGPTDialog";
 import { getChatGPTResponse } from "../../api/chat-api";
+import { checkAuth } from "../../utils/functions";
 
 jest.mock("../../api/queries");
 jest.mock("../../api/chat-api");
+jest.mock("../../api/login-api");
+
+jest.mock("../../utils/functions", () => ({
+    ...jest.requireActual("../../utils/functions"),
+    checkAuth: jest.fn(),
+}));
+
+beforeAll(() => {
+	checkAuth.mockReturnValue(true);
+});
 
 describe("<LifestageScreen />", () => {
 	beforeEach(() => {

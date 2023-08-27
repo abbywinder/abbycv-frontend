@@ -1,4 +1,4 @@
-export const sections = ['experience','education'];
+export const sections = ['experience','education','projects'];
 
 export const sortOptions = [{
   name: 'yeardesc', 
@@ -16,5 +16,5 @@ export const sortOptions = [{
 
 export const validationErrors = {
   bad: "Only the following symbols allowed: ._~()'!*:@,;+?-",
-  tooLong: "Max 100 characters allowed"
+  tooLong: "Exceeded max characters"
 };

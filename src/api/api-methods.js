@@ -1,21 +1,31 @@
-export const baseURL = 'http://localhost:3003/api/'
+export const baseURLauth = 'http://localhost:3003/';
+export const baseURL = baseURLauth + 'api/';
 
 // ----------------- API METHODS -----------------
 
 export const getData = (urlToFetch, options = {}) => {
     const getDataFromUrl = async () => {
         try {
-            const response =  await fetch(urlToFetch);
+            const response =  await fetch(urlToFetch, {
+                method: 'GET',
+                headers: {...options.customHeaders, ...{
+                    'Content-type': 'application/json',
+                    'Authorization': localStorage.getItem("authToken")
+                }}
+            });            
+            
             if(response.ok) {
                 const data = await response.json();
                 return data;
+            } else if (response.status == 404) {
+                return []
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
-            console.log(error);
+            throw error;
         }
     };
     return getDataFromUrl();
@@ -28,14 +38,17 @@ export const postData = (urlToPost, dataToPost, options = {}) => {
             const response =  await fetch(urlToPost, {
                 method: 'POST',
                 body: data,
-                headers: options.customHeaders ? options.customHeaders : {
-                    'Content-type': 'application/json'
-                }
+                headers: {...options.customHeaders, ...{
+                    'Content-type': 'application/json',
+                    'Authorization': localStorage.getItem("authToken")
+                }}
             });
 
             if(response.ok) {
                 const dataReturned = await response.json();
                 return dataReturned;
+            } else if (response.status == 404) {
+                return []
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
@@ -55,13 +68,16 @@ export const putData = (urlToPut, dataToPut, options = {}) => {
             const response =  await fetch(urlToPut, {
                 method: 'PUT',
                 body: data,
-                headers: options.customHeaders ? options.customHeaders : {
-                    'Content-type': 'application/json'
-                }
+                headers: {...options.customHeaders, ...{
+                    'Content-type': 'application/json',
+                    'Authorization': localStorage.getItem("authToken")
+                }}
             });
             if(response.ok) {
                 const dataReturned = await response.json();
                 return dataReturned;
+            } else if (response.status == 404) {
+                return []
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
@@ -85,14 +101,17 @@ export const patchData = (urlToPatch, op, path, value, options = {}) => {
             const response =  await fetch(urlToPatch, {
                 method: 'PATCH',
                 body: data,
-                headers: {
-                    'Content-type': 'application/json'
-                }
+                headers: {...options.customHeaders, ...{
+                    'Content-type': 'application/json',
+                    'Authorization': localStorage.getItem("authToken")
+                }}
             });
 
             if(response.ok) {
                 const dataReturned = await response.json();
                 return dataReturned;
+            } else if (response.status == 404) {
+                return []
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
@@ -110,12 +129,15 @@ export const deleteData = (urlToDelete, options = {}) => {
         try {
             const response =  await fetch(urlToDelete, {
                 method: 'DELETE',
-                headers: {
-                    'Content-type': 'application/json'
-                }
+                headers: {...options.customHeaders, ...{
+                    'Content-type': 'application/json',
+                    'Authorization': localStorage.getItem("authToken")
+                }}
             });
             if(response.ok) {
                 return 'Successfully deleted!'
+            } else if (response.status == 404) {
+                return []
             } else {
                 throw Error('No matching item found.');
             }

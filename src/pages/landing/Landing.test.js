@@ -8,13 +8,23 @@ import PreviewSection from "./PreviewSection";
 import App from "../../App";
 import { mockLifestages, mockSkillTags } from "../../utils/testConstants";
 import Footer from "../../components/Footer";
+import { checkAuth, redirectIfTokenExpired } from "../../utils/functions";
 
 jest.mock("../../api/queries");
+jest.mock("../../api/login-api");
+
+jest.mock("../../utils/functions", () => ({
+    ...jest.requireActual("../../utils/functions"),
+    checkAuth: jest.fn(),
+	redirectIfTokenExpired: jest.fn()
+}));
 
 describe("<LandingScreen />", () => {
 	beforeEach(() => {
 		useLifestages.mockImplementation(() => ({ isLoading: true }));
 		useSkills.mockImplementation(() => ({ isLoading: true }));
+		checkAuth.mockReturnValue(true);
+		redirectIfTokenExpired.mockImplementation(() => null);	
 	});
 	afterEach(() => {
 		jest.clearAllMocks();
@@ -27,7 +37,7 @@ describe("<LandingScreen />", () => {
 	it("Fetches all the lifestages", () => {
 		render(<LandingScreen />, {wrapper: BrowserRouter});
 		expect(useLifestages).toHaveBeenCalled();		
-		expect(useLifestages).toHaveBeenCalledTimes(3);
+		expect(useLifestages).toHaveBeenCalledTimes(2);
 	});
 
 	it("Fetches the skill filter data", () => {
@@ -42,14 +52,14 @@ describe("<LandingScreen />", () => {
 	});
 
 	it("Displays error message", () => {
-		useLifestages.mockImplementation(() => ({
+		useSkills.mockImplementation(() => ({
 			isLoading: false,
 			isError: true,
-			error: { message: "Unable to fetch lifestage data" },
+			error: { message: "Unable to fetch data" },
 		}));
 		const { getByText } = render(<LandingScreen />, {wrapper: BrowserRouter});
 
-		getByText(/something went wrong./i);
+		getByText(/Something went wrong. Please refresh the page./i);
 	});
 	
 	it("Renders the filter tags", () => {
@@ -151,7 +161,7 @@ describe("<LandingScreen />", () => {
 		await act(async () => {
 			await user.type(searchBar, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
 		});
-		expect(getByText("Max 100 characters allowed")).toBeInTheDocument();
+		expect(getByText("Exceeded max characters")).toBeInTheDocument();
 		expect(searchBar).toHaveValue('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ');
 	});
 
@@ -182,6 +192,7 @@ describe("<LandingScreen />", () => {
 			await user.selectOptions(select, 'durationdesc');
 		});
 		expect(select).toHaveValue('durationdesc');
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'education'});
 	});
 
 	it("Refetches lifestages when sort is changed", async () => {
@@ -200,6 +211,15 @@ describe("<LandingScreen />", () => {
 });
 
 describe("<PreviewSection />", () => {
+	beforeEach(() => {
+		checkAuth.mockReturnValue(true);
+		redirectIfTokenExpired.mockImplementation(() => null);	
+	});
+
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it("Renders the lifestage cards", () => {
 		useLifestages.mockImplementation(() => ({ isLoading: false, data: mockLifestages }));
 
@@ -225,6 +245,15 @@ describe("<PreviewSection />", () => {
 });
 
 describe("<Footer />", () => {
+	beforeEach(() => {
+		checkAuth.mockReturnValue(true);
+		redirectIfTokenExpired.mockImplementation(() => null);	
+	});
+
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it("Color theme changes when toggled", async () => {
 		const { getByRole } = render(<Footer />, {wrapper: BrowserRouter});
 		expect(getByRole('button')).toBeInTheDocument();

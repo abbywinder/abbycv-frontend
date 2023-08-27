@@ -1,25 +1,30 @@
-import { Fragment } from 'react'
-import { useParams } from 'react-router-dom';
+import { Fragment, useState } from 'react'
+import { redirect, useParams } from 'react-router-dom';
 import { useLifestages, useOneLifestage } from '../../api/queries';
-import ErrorBoundary from '../../components/ErrorBoundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
 import Tag from '../../components/Tag';
-import { capitalize } from '../../utils/functions';
+import { capitalize, checkAuth } from '../../utils/functions';
 import ChatGPTDialog from './chatGPTDialog/ChatGPTDialog';
 import './lifestage.css';
+import ErrorPage from '../../components/ErrorPage';
 
 const LifestageScreen = () => {
+
+    const authorized = checkAuth();
     const { stageId } = useParams();
 
     const { data: lifestage, isLoading, isError } = useOneLifestage(stageId);
+
+    if (!authorized) redirect('/login');
 
     if (isLoading) {
         return <Loading />
     };
 
     return (
-        <ErrorBoundary hasError={isError}>
+        <ErrorBoundary FallbackComponent={ErrorPage}>
             <Header />
             <div 
                 className='container'
