@@ -2,8 +2,8 @@ import { useLifestages } from '../../api/queries';
 import { capitalize } from '../../utils/functions';
 import LifestageCard from './LifestageCard';
 import Loading from '../../components/Loading';
-import './landing.css';
 import Tag from '../../components/Tag';
+import './landing.css';
 
 const PreviewSection = ({ section, sort, search, filters }) => {
 
@@ -17,7 +17,7 @@ const PreviewSection = ({ section, sort, search, filters }) => {
 
   const experienceEducationSection = (
     <ul className="cards-container">
-      {lifestages.map(lifestage => (
+      {lifestages && lifestages.map(lifestage => (
         <LifestageCard 
           key={lifestage._id}
           lifestage={lifestage} 
@@ -30,7 +30,10 @@ const PreviewSection = ({ section, sort, search, filters }) => {
     <ul className="portfolio-reading" >
       {lifestages && lifestages.map(lifestage => (
         <li key={lifestage._id}>
-          <a href={lifestage.link}>
+          <a 
+            href={lifestage.link}
+            className='portfolio-link'
+          >
             {lifestage.title}
           </a>
           {` - ${lifestage.description}`}
@@ -40,7 +43,7 @@ const PreviewSection = ({ section, sort, search, filters }) => {
                       key={skill} 
                       disableHover
                   >
-                      {skill}
+                    {skill}
                   </Tag>
               ))}
           </aside>
@@ -51,12 +54,18 @@ const PreviewSection = ({ section, sort, search, filters }) => {
 
   return (
     <section className="cards-section">
-      <h2>{capitalize(section)}</h2>
-      {lifestages && lifestages.length ? 
-        section == "education" || section == "experience" ? experienceEducationSection : porfolioReadingSection
+      <h2>
+        {capitalize(section)}
+      </h2>
+      {lifestages && lifestages.length 
+      ? section == "education" || section == "experience" 
+        ? experienceEducationSection
+        : porfolioReadingSection
       : 
         <div className="empty-list">
-          <h3>No {section} results here!</h3>
+          <h3>
+            No {section} results here!
+          </h3>
         </div>
       }
     </section>  

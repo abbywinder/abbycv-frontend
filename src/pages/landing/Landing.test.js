@@ -3,12 +3,12 @@ import { screen, render, act } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom'
 import { useLifestages, useOneLifestage, useSkills } from "../../api/queries";
+import { mockLifestages, mockSkillTags } from "../../utils/testConstants";
+import { checkAuth, redirectIfTokenExpired } from "../../utils/functions";
+import App from "../../App";
 import LandingScreen from "./LandingScreen";
 import PreviewSection from "./PreviewSection";
-import App from "../../App";
-import { mockLifestages, mockSkillTags } from "../../utils/testConstants";
 import Footer from "../../components/Footer";
-import { checkAuth, redirectIfTokenExpired } from "../../utils/functions";
 
 jest.mock("../../api/queries");
 jest.mock("../../api/login-api");
@@ -37,7 +37,7 @@ describe("<LandingScreen />", () => {
 	it("Fetches all the lifestages", () => {
 		render(<LandingScreen />, {wrapper: BrowserRouter});
 		expect(useLifestages).toHaveBeenCalled();		
-		expect(useLifestages).toHaveBeenCalledTimes(2);
+		expect(useLifestages).toHaveBeenCalledTimes(4);
 	});
 
 	it("Fetches the skill filter data", () => {
@@ -81,7 +81,7 @@ describe("<LandingScreen />", () => {
 		await act(async () => {
 			await user.click(tag);
 		});
-		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', soft_skills: ['organisation']});
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'reading list', soft_skills: ['organisation']});
 	});
 
 	it("Filter tag changes colour when clicked once, and changes back when clicked again", async () => {
@@ -134,7 +134,7 @@ describe("<LandingScreen />", () => {
 		await act(async () => {
 			await user.type(searchBar, 'react');
 		});
-		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'reading list', search: 'react'});
 	});
 
 	it("Produces validation error when bad characters are inputted in search bar", async () => {
@@ -148,7 +148,7 @@ describe("<LandingScreen />", () => {
 			await user.type(searchBar, 'react%');
 		});
 		expect(getByText("Only the following symbols allowed: ._~()'!*:@,;+?-")).toBeInTheDocument();
-		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'education', search: 'react'});
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'yeardesc', type: 'reading list', search: 'react'});
 	});
 
 	it("Produces validation error when search bar input length is over 100 characters", async () => {
@@ -171,6 +171,8 @@ describe("<LandingScreen />", () => {
 
 		expect(getByText('No experience results here!')).toBeInTheDocument();
 		expect(getByText('No education results here!')).toBeInTheDocument();
+		expect(getByText('No projects results here!')).toBeInTheDocument();
+		expect(getByText('No reading list results here!')).toBeInTheDocument();
 	});
 
 	it("Renders the sort dropdown", () => {
@@ -192,7 +194,7 @@ describe("<LandingScreen />", () => {
 			await user.selectOptions(select, 'durationdesc');
 		});
 		expect(select).toHaveValue('durationdesc');
-		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'education'});
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'reading list'});
 	});
 
 	it("Refetches lifestages when sort is changed", async () => {
@@ -205,7 +207,7 @@ describe("<LandingScreen />", () => {
 		await act(async () => {
 			await user.selectOptions(select, 'durationdesc');
 		});
-		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'education'});
+		expect(useLifestages).toHaveBeenLastCalledWith({sort: 'durationdesc', type: 'reading list'});
 	});
 
 });

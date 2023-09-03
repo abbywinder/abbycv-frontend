@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
-import Page404 from './404';
-import './App.css';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { checkAuth } from './utils/functions';
 import ErrorPage from './components/ErrorPage';
-import Loading from './components/Loading';
 import LandingScreen from './pages/landing/LandingScreen';
 import LifestageScreen from './pages/lifestages/LifestageScreen';
 import Login from './pages/login/Login';
-import { checkAuth } from './utils/functions';
+import Page404 from './404';
+import './App.css';
 
 const App = () => {
 

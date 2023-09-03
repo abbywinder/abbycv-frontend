@@ -18,7 +18,7 @@ export const getData = (urlToFetch, options = {}) => {
                 const data = await response.json();
                 return data;
             } else if (response.status == 404) {
-                return []
+                return [];
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
@@ -48,18 +48,20 @@ export const postData = (urlToPost, dataToPost, options = {}) => {
                 const dataReturned = await response.json();
                 return dataReturned;
             } else if (response.status == 404) {
-                return []
+                return [];
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
-            console.log(error);
+            throw error;
         }
     };
     return postDataToEndpoint();
 };
+
+// not used in cv code but coded for demonstration
 
 export const putData = (urlToPut, dataToPut, options = {}) => {
     const data = JSON.stringify(dataToPut);
@@ -77,14 +79,14 @@ export const putData = (urlToPut, dataToPut, options = {}) => {
                 const dataReturned = await response.json();
                 return dataReturned;
             } else if (response.status == 404) {
-                return []
+                return [];
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
-            console.log(error);
+            throw error;
         }
     };
     return putDataToEndpoint();
@@ -111,14 +113,14 @@ export const patchData = (urlToPatch, op, path, value, options = {}) => {
                 const dataReturned = await response.json();
                 return dataReturned;
             } else if (response.status == 404) {
-                return []
+                return [];
             } else {
                 const responseText = await response.text()
                 return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
-            console.log(error);
+            throw error;
         }
     };
     return patchDataToEndpoint();
@@ -137,13 +139,13 @@ export const deleteData = (urlToDelete, options = {}) => {
             if(response.ok) {
                 return 'Successfully deleted!'
             } else if (response.status == 404) {
-                return []
+                return [];
             } else {
                 throw Error('No matching item found.');
             }
         }
         catch(error) {
-            console.log(error);
+            throw error;
         }
     }
     return deleteDataFromEndpoint();

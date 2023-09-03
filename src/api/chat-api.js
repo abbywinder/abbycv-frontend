@@ -4,5 +4,5 @@ const endpoint = 'chat';
 
 export const getChatGPTResponse = chat => {
     redirectIfTokenExpired()
-    return postData(baseURL + endpoint, {chat: chat},{returnMessage: true});
+    return postData(baseURL + endpoint, {chat: chat}, {returnMessage: true});
 };

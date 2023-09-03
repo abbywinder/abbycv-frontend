@@ -1,14 +1,14 @@
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
-import Page404 from './404';
-import { useLifestages, useOneLifestage, useSkills } from './api/queries';
-import App from './App';
-import LandingScreen from './pages/landing/LandingScreen';
-import { checkAuth, encryptPassword, redirectIfTokenExpired } from './utils/functions';
-import { mockLifestageOne, mockLifestages, mockSkillTags } from './utils/testConstants';
 import jwtDecode from 'jwt-decode';
 import JSEncrypt from 'jsencrypt';
+import { useLifestages, useOneLifestage, useSkills } from './api/queries';
+import { checkAuth, encryptPassword, redirectIfTokenExpired } from './utils/functions';
+import { mockLifestageOne, mockLifestages, mockSkillTags } from './utils/testConstants';
+import App from './App';
+import LandingScreen from './pages/landing/LandingScreen';
+import Page404 from './404';
 
 jest.mock("./api/queries");
 jest.mock("./api/login-api");
@@ -251,10 +251,3 @@ describe("<Page404 />", () => {
         expect(getByText(/abby winder/i)).toBeInTheDocument();
     });
 });
-
-
-
-
-
-
-

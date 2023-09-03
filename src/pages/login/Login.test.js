@@ -2,8 +2,8 @@ import { screen, render, act, waitFor } from "@testing-library/react";
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom'
 import { getPublicKey, postLoginCredentials } from "../../api/login-api";
-import { useLifestages, useOneLifestage, useSkills } from "../../api/queries";
-import { checkAuth, encryptPassword, redirectIfTokenExpired } from "../../utils/functions";
+import { useLifestages, useSkills } from "../../api/queries";
+import { checkAuth, redirectIfTokenExpired } from "../../utils/functions";
 import Login from "./Login";
 
 jest.mock("../../api/queries");
@@ -13,6 +13,16 @@ jest.mock("../../utils/functions", () => ({
     checkAuth: jest.fn(),
 	redirectIfTokenExpired: jest.fn()
 }));
+
+const realLocation = window.location;
+beforeAll(() => {
+  delete window.location;
+  window.location = { ...realLocation, assign: jest.fn() };
+});
+
+afterAll(() => {
+  window.location = realLocation;
+});
 
 describe("<Login />", () => {
 	beforeEach(() => {
@@ -145,7 +155,7 @@ describe("<Login />", () => {
 
     it("If credentials correct and accepted, redirects to root URL and landing screen is shown", async () => {
         postLoginCredentials.mockReturnValue('Ok'); 
-
+        
 		const { getByTestId, getByRole } = render(<Login />, {wrapper: BrowserRouter});
         const usernameInput = getByTestId('username-input');
         const passwordInput = getByTestId('password-input');
@@ -159,7 +169,7 @@ describe("<Login />", () => {
 		});
 
         expect(postLoginCredentials).toHaveBeenCalledWith('username','password');
-        expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument();      
+        expect(screen.queryByTestId('loading-spinner')).toBeInTheDocument();
         expect(window.location.assign).toHaveBeenCalled();
     });
 
@@ -266,8 +276,8 @@ describe("<Login />", () => {
         postLoginCredentials.mockReturnValue(null);
 
         const { getByTestId, getByRole, getByText } = render(<Login />, {wrapper: BrowserRouter});
-        const usernameInput = getByTestId('username-input');
-        const passwordInput = getByTestId('password-input');
+        let usernameInput = getByTestId('username-input');
+        let passwordInput = getByTestId('password-input');
         const submitButton = getByRole('button');
 
 		const user = userEvent.setup()
@@ -279,8 +289,10 @@ describe("<Login />", () => {
 
         expect(postLoginCredentials).toHaveBeenCalledWith('username','password');
         expect(screen.queryByTestId('loading-spinner')).not.toBeInTheDocument(); 
-        
         getByText('Incorrect username or password');
+        
+        usernameInput = getByTestId('username-input'); // needs to requery component otherwise test fails
+        passwordInput = getByTestId('password-input'); // needs to requery component otherwise test fails
         expect(usernameInput).toHaveValue('');
         expect(passwordInput).toHaveValue('');
     });

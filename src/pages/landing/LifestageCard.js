@@ -3,19 +3,16 @@ import { Link } from 'react-router-dom';
 
 const LifestageCard = ({lifestage}) => {
 
-    const disableLink = lifestage.date_end < "2011-01-01T10:53:53.000Z";
-
     return (
         <li className='card-container'>
             <Link 
-                to={!disableLink ? `/stage/${encodeURIComponent(lifestage._id)}` : null}
+                to={`/stage/${encodeURIComponent(lifestage._id)}`}
                 data-testid='lifestage-card-link'
-                className={disableLink ? 'link-disabled' : null}
             >
                 <img 
-                    src='https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg' 
+                    src={lifestage && lifestage.front_image ? lifestage.front_image : 'https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg'}
                     className="card-img"
-                    alt={`Image of Abby in ${lifestage.date_start.slice(0,4)}`}
+                    alt={`Image of ${lifestage.title}`}
                 />
                 <h4>
                     {lifestage.date_start.slice(0,4)} - {lifestage.date_end.slice(0,4)}

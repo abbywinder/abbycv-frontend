@@ -8,11 +8,14 @@ const Footer = () => {
     },[]);
 
     const links = [{
-        link: 'www.google.co',
+        link: 'https://www.linkedin.com/in/abby-winder-38bb669a/',
         icon: icons.linkedin
     }, {
-        link: 'www.google.com',
+        link: 'https://github.com/abbywinder',
         icon: icons.github
+    }, {
+        link: 'https://cv-images-12.s3.eu-west-1.amazonaws.com/Abby+Winder+CV.pdf',
+        icon: icons.cv
     }];
 
     const [activeTheme, setActiveTheme] = useState('light');
@@ -27,7 +30,11 @@ const Footer = () => {
             <div className='links'>
                 {
                     links.length ? links.map(link => (
-                        <a key={link.link} href={link.link}>
+                        <a 
+                            key={link.link} 
+                            href={link.link}
+                            target="_blank"
+                        >
                             {link.icon}
                         </a>
                     ))

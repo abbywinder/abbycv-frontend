@@ -1,13 +1,13 @@
 import React from "react";
+import userEvent from '@testing-library/user-event';
 import { render, act, waitFor } from "@testing-library/react";
 import { BrowserRouter } from 'react-router-dom'
-import userEvent from '@testing-library/user-event';
-import LifestageScreen from "./LifestageScreen";
-import { useOneLifestage } from "../../api/queries";
-import { mockLifestageOne } from "../../utils/testConstants";
-import ChatGPTDialog from "./chatGPTDialog/ChatGPTDialog";
 import { getChatGPTResponse } from "../../api/chat-api";
 import { checkAuth } from "../../utils/functions";
+import { useOneLifestage } from "../../api/queries";
+import { mockLifestageOne } from "../../utils/testConstants";
+import LifestageScreen from "./LifestageScreen";
+import ChatGPTDialog from "./chatGPTDialog/ChatGPTDialog";
 
 jest.mock("../../api/queries");
 jest.mock("../../api/chat-api");
@@ -42,6 +42,22 @@ describe("<LifestageScreen />", () => {
         expect(getByTestId('images')).toBeInTheDocument();
         expect(getByTestId('description')).toBeInTheDocument();
         expect(getByTestId('skills')).toBeInTheDocument();
+    });
+
+    it("Doesn't render image section if no images found in lifestage", () => {
+        const lifestageNoImages = {...mockLifestageOne, ...{images: []}};
+        useOneLifestage.mockImplementation(() => ({ isLoading: false, isError: false, data: lifestageNoImages }));
+        const { queryByTestId } = render(<LifestageScreen />, {wrapper: BrowserRouter});
+
+        expect(queryByTestId('images')).not.toBeInTheDocument();
+    });
+
+    it("Doesn't render skill section if no skills found in lifestage", () => {
+        const lifestageNoSkills = {...mockLifestageOne, ...{hard_skills: [], soft_skills: []}};
+        useOneLifestage.mockImplementation(() => ({ isLoading: false, isError: false, data: lifestageNoSkills }));
+        const { queryByTestId } = render(<LifestageScreen />, {wrapper: BrowserRouter});
+
+        expect(queryByTestId('skills')).not.toBeInTheDocument();
     });
 });
 

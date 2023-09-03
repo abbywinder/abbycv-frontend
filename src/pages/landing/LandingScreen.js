@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useLifestages, useSkills } from '../../api/queries';
+import { useState } from 'react';
+import { redirect } from 'react-router-dom';
+import { useSkills } from '../../api/queries';
 import { ErrorBoundary } from 'react-error-boundary';
-import PreviewSection from './PreviewSection';
 import { validationErrors, sortOptions, sections } from '../constants';
-import './landing.css';
+import { checkAuth } from '../../utils/functions';
+import PreviewSection from './PreviewSection';
 import FilterSection from './FilterSection';
 import SearchBar from './SearchBar';
 import Sort from './Sort';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ErrorPage from '../../components/ErrorPage';
-import { redirect } from 'react-router-dom';
-import { checkAuth } from '../../utils/functions';
+import './landing.css';
+
 
 const LandingScreen = () => {
   

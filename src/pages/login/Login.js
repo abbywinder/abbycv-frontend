@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getPublicKey, postLoginCredentials } from "../../api/login-api";
-import Loading from "../../components/Loading";
 import { validationErrors } from "../constants";
+import Loading from "../../components/Loading";
 import './login.css';
 
 const Login = () => {
@@ -45,7 +45,9 @@ const Login = () => {
 
     return (
         <div className='login-container'>
-            <h1 className="heading-text">Please enter credentials to proceed...</h1>
+            <h1 className="heading-text">
+                Please enter credentials to proceed...
+            </h1>
 
             {credError ?
                 <aside className='cred-error'>
@@ -61,6 +63,7 @@ const Login = () => {
                     data-testid='username-input'
                     className='credential-input'
                     type='text' 
+                    value={username}
                     role='search'
                     placeholder='Enter username...'
                     autoComplete='false'
@@ -73,6 +76,7 @@ const Login = () => {
                     data-testid='password-input'
                     type='password' 
                     role='search'
+                    value={password}
                     placeholder='Enter password...'
                     autoComplete='false'
                     onChange={e => handleInput(e.target.value, 'password')}

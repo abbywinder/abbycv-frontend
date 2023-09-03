@@ -1,4 +1,4 @@
-export const sections = ['experience','education','projects'];
+export const sections = ['experience','education','projects','reading list'];
 
 export const sortOptions = [{
   name: 'yeardesc', 

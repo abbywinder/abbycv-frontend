@@ -1,14 +1,14 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { redirect, useParams } from 'react-router-dom';
-import { useLifestages, useOneLifestage } from '../../api/queries';
+import { useOneLifestage } from '../../api/queries';
 import { ErrorBoundary } from 'react-error-boundary';
+import { capitalize, checkAuth } from '../../utils/functions';
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
 import Tag from '../../components/Tag';
-import { capitalize, checkAuth } from '../../utils/functions';
 import ChatGPTDialog from './chatGPTDialog/ChatGPTDialog';
-import './lifestage.css';
 import ErrorPage from '../../components/ErrorPage';
+import './lifestage.css';
 
 const LifestageScreen = () => {
 
@@ -23,19 +23,25 @@ const LifestageScreen = () => {
         return <Loading />
     };
 
+    const showSkillsSection = lifestage && lifestage.hard_skills.length || lifestage.soft_skills.length;
+
     return (
         <ErrorBoundary FallbackComponent={ErrorPage}>
             <Header />
             <div 
                 className='container'
-                style={{    
-                    backgroundColor: document.body.dataset.theme === 'light' ? lifestage.background_col : 'inherit',
-                    color: 'white'
+                style={{
+                    backgroundColor: showSkillsSection 
+                    ? 'auto' 
+                    : document.body.dataset.theme === 'light' 
+                        ? lifestage.background_col 
+                        : 'inherit'
                 }}
             >
                 <section 
                     id='title' 
                     data-testid='title'
+                    style={{backgroundColor: document.body.dataset.theme === 'light' ? lifestage.background_col : 'inherit'}}
                 >
                     <h1>
                         {lifestage.title.slice(12)}
@@ -45,18 +51,28 @@ const LifestageScreen = () => {
                     </h2>
                 </section>
                 
-                <section className='desc-img-container'>
+                <section 
+                    className='desc-img-container'
+                    style={{backgroundColor: document.body.dataset.theme === 'light' ? lifestage.background_col : 'inherit'}}
+                >
                     <div data-testid='description'>
                         {lifestage.description && lifestage.description.map((paragraph,i) => (
-                            <p key={i}>{paragraph}</p>
+                            <p key={i}>
+                                {paragraph}
+                            </p>
                         ))}
 
                         {lifestage.achievements && lifestage.achievements.length ?
                             <Fragment>
-                                <h3>Achievements</h3>
+                                <h3>
+                                    Achievements
+                                </h3>
                                 <ul>
                                     {lifestage.achievements.map(achievement => (
-                                        <li key={achievement}>
+                                        <li 
+                                            key={achievement}
+                                            className={'achievement-list'}
+                                        >
                                             {achievement}
                                         </li>
                                     ))}
@@ -65,32 +81,61 @@ const LifestageScreen = () => {
                         : null}
                     </div>
 
-                    <div data-testid='images'>
-                        <img 
-                            src='https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg' 
-                            className="images"
-                            alt={`Examples of ${lifestage.title}`}
-                        />
-                    </div>
+                    {lifestage.images.length ?
+                        <div 
+                            data-testid='images'
+                            className='image-container'
+                        >
+                            {lifestage.images.map(media => {
+                                return media.slice(-3) === 'mp4'
+                                ? <video 
+                                    width="1600" 
+                                    height="545" 
+                                    controls
+                                    className="videos"
+                                   >
+                                    <source 
+                                        src={media} 
+                                        type="video/mp4" 
+                                    />
+                                  </video>
+                                : <img 
+                                    key={media}
+                                    src={media} 
+                                    className="images"
+                                    alt={`Examples of ${lifestage.title}`}
+                                />
+                            })}
+                        </div>
+                    : null}
                 </section>
 
-                <section 
-                    data-testid='skills'
-                    className='skills-container'
-                >
-                    {['hard_skills','soft_skills'].map(skill_cat => (
-                        lifestage[skill_cat] && lifestage[skill_cat].length ?
-                            <div key={skill_cat}>
-                                <h3>{capitalize(skill_cat.replace('_',' '))}</h3>
-                                <div>
-                                    {lifestage[skill_cat].map(e => (
-                                        <Tag key={e}>{e}</Tag>
-                                    ))}
+                {showSkillsSection ?
+                    <section 
+                        data-testid='skills'
+                        className='skills-container'
+                    >
+                        {['hard_skills','soft_skills'].map(skill_cat => (
+                            lifestage[skill_cat] && lifestage[skill_cat].length ?
+                                <div key={skill_cat}>
+                                    <h3 className="skill-heading">
+                                        {capitalize(skill_cat.replace('_',' '))}
+                                    </h3>
+                                    <div>
+                                        {lifestage[skill_cat].map(e => (
+                                            <Tag 
+                                                key={e}
+                                                disableHover
+                                            >
+                                                {e}
+                                            </Tag>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        : null
-                    ))}
-                </section>
+                            : null
+                        ))}
+                    </section>
+                : null}
                 <ChatGPTDialog 
                     lifestage={lifestage}
                 />

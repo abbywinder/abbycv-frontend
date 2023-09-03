@@ -2,12 +2,16 @@ import jwtDecode from 'jwt-decode';
 import JSEncrypt from 'jsencrypt';
 
 export const capitalize = string => {
-    string = string.toLowerCase()
-      if (typeof string === 'string') {
-          return string.charAt(0).toUpperCase() + string.slice(1);
-      } else {
-          return string;
-      };
+  if (typeof string === 'string') {
+    const words = string.split(' ').map(word => {
+      word = word.toLowerCase();
+      word = word.charAt(0).toUpperCase() + word.slice(1);
+      return word;
+    });
+    return words.join(' ');
+  } else {
+    return string;
+  };
 };
 
 export const checkAuth = () => {
@@ -29,7 +33,6 @@ export const checkAuth = () => {
     return false;
   }
 };
-
 
 export const redirectIfTokenExpired = (test=false) => {
     const authToken = localStorage.getItem('authToken');

@@ -64,7 +64,7 @@
 .card-container {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
+    justify-content: flex-end;
     align-items: center;
     padding: 2rem;
     margin: 1rem;
@@ -86,6 +86,8 @@
 
 .card-img {
     width: 100%;
+    max-height: 300px;
+    object-fit: cover;
 }
 
 .skill-tag-container {
@@ -117,7 +119,7 @@
 .portfolio-reading {
     text-align: left;
     margin: 5% 10%;
-    background-color: var(--colors-lowcontrast);
+    background-color: var(--colors-accent2);
     padding: 2rem;
 }
 
@@ -125,13 +127,17 @@
     padding: 1rem 0;
 }
 
-a {
-    color: blue;
+.portfolio-link {
+    text-decoration: underline;
 }
 
 @media only screen and (min-width:0px) and (max-width:599px)  { 
     .card-container {
         width: calc(100% - 2rem);
+    }
+
+    .filter-tags-container {
+        width: 100%;
     }
 
     .search-bar {
