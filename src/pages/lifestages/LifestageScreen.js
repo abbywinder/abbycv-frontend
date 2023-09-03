@@ -89,6 +89,7 @@ const LifestageScreen = () => {
                             {lifestage.images.map(media => {
                                 return media.slice(-3) === 'mp4'
                                 ? <video 
+                                    key={media}
                                     width="1600" 
                                     height="545" 
                                     controls
