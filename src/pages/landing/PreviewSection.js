@@ -33,6 +33,7 @@ const PreviewSection = ({ section, sort, search, filters }) => {
           <a 
             href={lifestage.link}
             className='portfolio-link'
+            target="_blank"
           >
             {lifestage.title}
           </a>
