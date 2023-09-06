@@ -38,7 +38,7 @@ const PreviewSection = ({ section, sort, search, filters }) => {
           </a>
           {` - ${lifestage.description}`}
           <aside className='skill-tag-container projects'>
-              {lifestage.hard_skills.slice(0,3).map(skill => (
+              {lifestage.hard_skills.slice(0,6).map(skill => (
                   <Tag 
                       key={skill} 
                       disableHover
