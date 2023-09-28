@@ -1,4 +1,4 @@
-export const baseURLauth = 'http://localhost:3003/';
+export const baseURLauth = process.env.REACT_APP_API_KEY;
 export const baseURL = baseURLauth + 'api/';
 
 // ----------------- API METHODS -----------------
