@@ -21,10 +21,12 @@ export const getData = (urlToFetch, options = {}) => {
                 return [];
             } else {
                 const responseText = await response.text()
+                console.log(responseText)
                 return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
+            console.log(error)
             throw error;
         }
     };
@@ -51,10 +53,12 @@ export const postData = (urlToPost, dataToPost, options = {}) => {
                 return [];
             } else {
                 const responseText = await response.text()
+                console.log(responseText)
                 return options.returnMessage ? responseText : null;
             }
         }
         catch(error) {
+            console.log(error)
             throw error;
         }
     };
