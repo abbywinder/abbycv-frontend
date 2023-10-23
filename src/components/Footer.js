@@ -13,10 +13,12 @@ const Footer = () => {
     }, {
         link: 'https://github.com/abbywinder',
         icon: icons.github
-    }, {
-        link: 'https://cv-images-12.s3.eu-west-1.amazonaws.com/Abby+Winder+CV.pdf',
-        icon: icons.cv
-    }];
+    }, 
+    // {
+    //     link: 'https://cv-images-12.s3.eu-west-1.amazonaws.com/Abby+Winder+CV.pdf',
+    //     icon: icons.cv
+    // }
+    ];
 
     const [activeTheme, setActiveTheme] = useState('light');
 
